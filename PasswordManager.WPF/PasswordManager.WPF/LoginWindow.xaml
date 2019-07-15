@@ -1,0 +1,124 @@
+﻿<Window x:Class="PasswordManager.WPF.Login"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PasswordManager.WPF"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        mc:Ignorable="d"
+        Title="Password Manager" 
+        d:DesignWidth="1000"
+        d:DesignHeight="1000"
+        Height="799"
+        Width="1000">
+    <Grid Background="#f2f2f2">
+
+        <Border BorderBrush="Black"
+            BorderThickness="1"
+            CornerRadius="1" Height="500" Width="400">
+            <Border.Effect>
+                <DropShadowEffect Color="LightGray"/>
+            </Border.Effect>
+            <Grid x:Name="GridLogin" HorizontalAlignment="Center" Height="500" VerticalAlignment="Center" Width="400" Background="White" >
+
+                <Label x:Name="LabelLoginSignIn" Content="Sign In" HorizontalAlignment="Left" Margin="30,30,0,0" VerticalAlignment="Top" Width="150" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" FontSize="24" FontWeight="Bold"/>
+
+                <Button x:Name="ButtonLoginSwitch" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,45,35,0" Background="White" BorderBrush="White" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave">
+                    <TextBlock x:Name="TextBlockButtonLoginSwitch" TextDecorations="none" FontSize="15" Foreground="#0066ff">
+                        Create Account
+                    </TextBlock>
+                    <Button.Style>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="Background" Value="Red"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Border Background="{TemplateBinding Background}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Cursor" Value="Hand"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Label x:Name="LabelLoginEmail" Content="Email Address" HorizontalAlignment="Left" Margin="30,110,0,0" VerticalAlignment="Top" Width="150" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" FontSize="15"/>
+
+
+                <TextBox x:Name="TextBoxLoginEmail" HorizontalAlignment="Center" Height="40" Margin="32,145,33,0" TextWrapping="NoWrap" Text="" VerticalAlignment="Top" Width="335" FontSize="18" VerticalContentAlignment="Center"/>
+
+                <Label x:Name="LabelLoginEmailError" Content="Email Address is required." HorizontalAlignment="Left" Margin="30,190,0,0" VerticalAlignment="Top" Width="200" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" FontSize="14" Foreground="Red" Visibility="Collapsed"/>
+
+                <Label x:Name="LabelLoginPassword" Content="Password" HorizontalAlignment="Left" Margin="30,230,0,0" VerticalAlignment="Top" Width="150" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" FontSize="15"/>
+
+                <Label x:Name="LabelLoginPasswordError" Content="Password is required. " HorizontalAlignment="Left" Margin="30,310,0,0" VerticalAlignment="Top" Width="200" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" FontSize="14" Foreground="Red" Visibility="Collapsed"/>
+
+                <PasswordBox x:Name="TextBoxLoginPassword" HorizontalAlignment="Center" Height="40" Margin="0,265,0,0" VerticalAlignment="Top" Width="335" FontSize="18" VerticalContentAlignment="Center" PasswordChar="*"/>
+
+                <Button x:Name="ButtonLoginTrouble" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,405,35,0" Background="White" BorderBrush="White" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave">
+                    <TextBlock x:Name="TextBlockButtonLoginTrouble" TextDecorations="none" FontSize="15" Foreground="#0066ff">
+                       Forgot Password?
+                    </TextBlock>
+                    <Button.Style>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="Background" Value="Red"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Border Background="{TemplateBinding Background}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Cursor" Value="Hand"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Button x:Name="ButtonLogin" Content="Sign In" HorizontalAlignment="Center" VerticalAlignment="Top" Width="335" Height="40" Margin="0,430,0,0" FontSize="18" FontWeight="Bold" Foreground="White" Background="#0066ff" BorderBrush="#3366cc" Click="ButtonLogin_Click">
+                    <Button.Style>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="Background" Value="#FF1C7BCA"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Name="border" Background="{TemplateBinding Background}" BorderThickness="1" BorderBrush="#FF5397D1" CornerRadius="3">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="Button.IsPressed" Value="True">
+                                                <Setter TargetName="border" Property="BorderBrush" Value="Transparent" />
+                                            </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="Red"/>
+                                                <Setter Property="Cursor" Value="Hand"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Label x:Name="LabelLoginFail" Content="Incorrect Email or Password" HorizontalAlignment="Center" Margin="0,0,0,110" VerticalAlignment="Bottom" Width="335" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="15" Foreground="Red" BorderBrush="Red" BorderThickness="1" Background="#ffe6e6" Visibility="Collapsed"/>
+
+                <fa:ImageAwesome Icon="CircleOutlineNotch" Spin="True" SpinDuration="4" />
+
+            </Grid>
+        </Border>
+
+    </Grid>
+</Window>
