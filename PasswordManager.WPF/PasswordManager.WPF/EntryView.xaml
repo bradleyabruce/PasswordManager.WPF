@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PasswordManager.WPF"
         mc:Ignorable="d"
-        Title="EntryView"
+        Title="Password Manager"
         WindowStyle="SingleBorderWindow" WindowState="Maximized" 
         ResizeMode="CanResize" 
         Loaded="Window_Loaded" 
@@ -23,18 +23,64 @@
             <ColumnDefinition x:Name="ColumnDefinitionBody" Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Header Grid-->
-        <Grid x:Name="HeaderGrid" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" Background="LightBlue" Grid.ColumnSpan="2">
-
-            <TextBox x:Name="TextBoxTitle" HorizontalAlignment="Center" Height="30" TextWrapping="NoWrap" Text="Password Manager" VerticalAlignment="Center" Width="175" FontSize="20" IsReadOnly="True"/>
-
-            <Button x:Name="buttonUserMenu" HorizontalAlignment="Right" Margin="0,0,25,0" VerticalAlignment="Center" Width="25" Height="25" BorderThickness="0" Background="LightBlue" Mouse.MouseEnter="ButtonUserMenu_MouseEnter" Mouse.MouseLeave="ButtonUserMenu_MouseLeave">
-                <StackPanel>
-                    <Image x:Name="buttonUserMenuDropDownArrowImage"/>
-                </StackPanel>
+        <!-- Nav Grid-->
+        <Grid x:Name="NavGrid" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" Background="#4d4d4d" Grid.ColumnSpan="2">
+            
+            <Button x:Name="ButtonAdd" Content="Add" HorizontalAlignment="Left" VerticalAlignment="Center" Width="135" Height="45" Margin="30,0,0,0" FontSize="18" FontWeight="Bold" Foreground="White" Background="#0066ff" BorderBrush="#3366cc">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="#FF1C7BCA"/>
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Name="border" Background="{TemplateBinding Background}" BorderThickness="1" BorderBrush="#FF5397D1" CornerRadius="3">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="Button.IsPressed" Value="True">
+                                            <Setter TargetName="border" Property="BorderBrush" Value="Transparent" />
+                                        </Trigger>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="Red"/>
+                                            <Setter Property="Cursor" Value="Hand"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
             </Button>
 
-            <TextBox x:Name="textboxUserName" Text="user@email.com" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" HorizontalAlignment="Right" Margin="0,0,50,0" Padding="4,0,0,0" VerticalAlignment="Center" Height="25" BorderThickness="0" Background="LightBlue" IsReadOnly="True"/>
+            <Button x:Name="ButtonUser" Content="" HorizontalAlignment="Right" VerticalAlignment="Center" Width="300" Height="45" Margin="0,0,30,0" FontSize="18" FontWeight="Bold" Foreground="White" Background="#0066ff" BorderBrush="#3366cc" Click="ButtonUser_Click">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="#FF1C7BCA"/>
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Name="border" Background="{TemplateBinding Background}" BorderThickness="1" BorderBrush="#FF5397D1" CornerRadius="3">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="Button.IsPressed" Value="True">
+                                            <Setter TargetName="border" Property="BorderBrush" Value="Transparent" />
+                                        </Trigger>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="Red"/>
+                                            <Setter Property="Cursor" Value="Hand"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+            
 
 
 
@@ -42,7 +88,7 @@
         <!-- Header Grid -->
 
         <!-- Menu Grid -->
-        <Grid x:Name="MenuGrid" HorizontalAlignment="Stretch" Height="{Binding ActualHeight, ElementName=MainGrid, Mode=OneWay}" VerticalAlignment="Top" Background="#bfbfbf" Grid.Column="0" Grid.Row="1">
+        <Grid x:Name="MenuGrid" HorizontalAlignment="Stretch" Height="{Binding ActualHeight, ElementName=MainGrid, Mode=OneWay}" VerticalAlignment="Top" Background="White" Grid.Column="0" Grid.Row="1">
 
 
 
@@ -53,6 +99,16 @@
         <Grid x:Name="BodyGrid" HorizontalAlignment="Stretch" Height="{Binding ActualHeight, ElementName=MainGrid, Mode=OneWay}" VerticalAlignment="Top" Background="white" Grid.Column="1" Grid.Row="1">
 
 
+            <Border x:Name="BorderUserSettings" BorderBrush="#0066ff"
+            BorderThickness="1"
+            CornerRadius="3" Height="200" Width="350" Visibility="Visible" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,2,30,0" Background="White">
+                <Border.Effect>
+                    <DropShadowEffect Color="LightGray"/>
+                </Border.Effect>
+                <Grid x:Name="GridUserSettings" >
+
+                </Grid>
+            </Border>
 
 
             <Button Content="Button" HorizontalAlignment="Left" Margin="560,490,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>

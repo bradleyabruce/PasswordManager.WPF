@@ -116,12 +116,12 @@ namespace PasswordManager.WPF
 
                 bool loginResult = await loginAsync;
 
-                if (loginResult)
-                {
+                if (loginResult) { 
 
-                    EntryView entryView = new EntryView();
-                    entryView.ShowDialog();
-                    this.Close();
+                EntryView entryView = new EntryView();
+                this.Close();
+                entryView.ShowDialog();
+
                 }
                 else
                 {

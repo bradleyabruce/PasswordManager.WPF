@@ -26,14 +26,17 @@ namespace PasswordManager.WPF
         {
             InitializeComponent();
 
-            //set images to buttons
-            ImageSource imageSourcebuttonUserMenuDropDownArrow = new BitmapImage(new Uri("/img/DropDownArrow.png", UriKind.Relative));
-            buttonUserMenuDropDownArrowImage.Source = imageSourcebuttonUserMenuDropDownArrow;
+            
 
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            string userID = App.Current.Properties["UserID"].ToString();
+            string email = App.Current.Properties["UserEmail"].ToString();
+
+            ButtonUser.Content = email + " ⯆";
+
         }
 
         #endregion
@@ -49,15 +52,27 @@ namespace PasswordManager.WPF
         private void ButtonUserMenu_MouseEnter(object sender, MouseEventArgs e)
         {
             var converter = new BrushConverter();
-            textboxUserName.Background = (Brush)converter.ConvertFrom("#BEE6FD");
+            //textboxUserName.Background = (Brush)converter.ConvertFrom("#BEE6FD");
         }
 
         private void ButtonUserMenu_MouseLeave(object sender, MouseEventArgs e)
         {
             var converter = new BrushConverter();
-            textboxUserName.Background = Brushes.LightBlue;
+            //textboxUserName.Background = Brushes.LightBlue;
         }
 
         #endregion
+
+        private void ButtonUser_Click(object sender, RoutedEventArgs e)
+        {
+            if (BorderUserSettings.Visibility == Visibility.Collapsed)
+            {
+                BorderUserSettings.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                BorderUserSettings.Visibility = Visibility.Collapsed;
+            }
+        }
     }
 }
