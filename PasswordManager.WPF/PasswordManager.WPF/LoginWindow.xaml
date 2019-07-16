@@ -13,17 +13,17 @@
         Width="1000">
     <Grid Background="#f2f2f2">
 
-        <Border BorderBrush="Black"
+        <Border x:Name="BorderLogin" BorderBrush="Black"
             BorderThickness="1"
             CornerRadius="1" Height="500" Width="400">
             <Border.Effect>
                 <DropShadowEffect Color="LightGray"/>
             </Border.Effect>
-            <Grid x:Name="GridLogin" HorizontalAlignment="Center" Height="500" VerticalAlignment="Center" Width="400" Background="White" >
+            <Grid x:Name="GridLogin" HorizontalAlignment="Center" Height="500" VerticalAlignment="Center" Width="400" Background="White">
 
                 <Label x:Name="LabelLoginSignIn" Content="Sign In" HorizontalAlignment="Left" Margin="30,30,0,0" VerticalAlignment="Top" Width="150" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" FontSize="24" FontWeight="Bold"/>
 
-                <Button x:Name="ButtonLoginSwitch" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,45,35,0" Background="White" BorderBrush="White" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave">
+                <Button x:Name="ButtonLoginSwitch" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,45,35,0" Background="White" BorderBrush="White" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Click="ButtonLoginSwitch_Click">
                     <TextBlock x:Name="TextBlockButtonLoginSwitch" TextDecorations="none" FontSize="15" Foreground="#0066ff">
                         Create Account
                     </TextBlock>
@@ -51,7 +51,7 @@
                 <Label x:Name="LabelLoginEmail" Content="Email Address" HorizontalAlignment="Left" Margin="30,110,0,0" VerticalAlignment="Top" Width="150" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" FontSize="15"/>
 
 
-                <TextBox x:Name="TextBoxLoginEmail" HorizontalAlignment="Center" Height="40" Margin="32,145,33,0" TextWrapping="NoWrap" Text="" VerticalAlignment="Top" Width="335" FontSize="18" VerticalContentAlignment="Center"/>
+                <TextBox x:Name="TextBoxLoginEmail" HorizontalAlignment="Center" Height="40" Margin="32,145,33,0" TextWrapping="NoWrap" Text="" VerticalAlignment="Top" Width="335" FontSize="18" VerticalContentAlignment="Center" Padding="10,0,0,0"/>
 
                 <Label x:Name="LabelLoginEmailError" Content="Email Address is required." HorizontalAlignment="Left" Margin="30,190,0,0" VerticalAlignment="Top" Width="200" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" FontSize="14" Foreground="Red" Visibility="Collapsed"/>
 
@@ -59,7 +59,7 @@
 
                 <Label x:Name="LabelLoginPasswordError" Content="Password is required. " HorizontalAlignment="Left" Margin="30,310,0,0" VerticalAlignment="Top" Width="200" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" FontSize="14" Foreground="Red" Visibility="Collapsed"/>
 
-                <PasswordBox x:Name="TextBoxLoginPassword" HorizontalAlignment="Center" Height="40" Margin="0,265,0,0" VerticalAlignment="Top" Width="335" FontSize="18" VerticalContentAlignment="Center" PasswordChar="*"/>
+                <PasswordBox x:Name="TextBoxLoginPassword" HorizontalAlignment="Center" Height="40" Margin="0,265,0,0" VerticalAlignment="Top" Width="335" FontSize="18" VerticalContentAlignment="Center" PasswordChar="*" Padding="10,0,0,0"/>
 
                 <Button x:Name="ButtonLoginTrouble" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,405,35,0" Background="White" BorderBrush="White" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave">
                     <TextBlock x:Name="TextBlockButtonLoginTrouble" TextDecorations="none" FontSize="15" Foreground="#0066ff">
@@ -115,10 +115,173 @@
 
                 <Label x:Name="LabelLoginFail" Content="Incorrect Email or Password" HorizontalAlignment="Center" Margin="0,0,0,110" VerticalAlignment="Bottom" Width="335" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="15" Foreground="Red" BorderBrush="Red" BorderThickness="1" Background="#ffe6e6" Visibility="Collapsed"/>
 
-                <fa:ImageAwesome Icon="CircleOutlineNotch" Spin="True" SpinDuration="4" />
+                <fa:ImageAwesome x:Name="LoginLoading" Icon="CircleOutlineNotch" Spin="True" SpinDuration="2" Height="30" Width="30" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,34" Foreground="White" Visibility="Collapsed"/>
 
             </Grid>
         </Border>
+        <!-- End Border Login -->
+
+        <!-- Border SignUp -->
+        <Border x:Name="BorderSignUp" BorderBrush="Black"
+            BorderThickness="1"
+            CornerRadius="1" Height="500" Width="400" Visibility="Collapsed" >
+            <Border.Effect>
+                <DropShadowEffect Color="LightGray"/>
+            </Border.Effect>
+            <Grid x:Name="GridSignUp" HorizontalAlignment="Center" Height="500" VerticalAlignment="Center" Width="400" Background="White" >
+
+                <Label x:Name="LabelSignUpTitle" Content="Create Account" HorizontalAlignment="Left" Margin="30,30,0,0" VerticalAlignment="Top" Width="190" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" FontSize="24" FontWeight="Bold"/>
+
+                <Button x:Name="ButtonSignUpSwitch" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,45,35,0" Background="White" BorderBrush="White" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Click="ButtonSignUpSwitch_Click">
+                    <TextBlock x:Name="TextBlockButtonSignUpSwitch" TextDecorations="none" FontSize="15" Foreground="#0066ff">
+                        Sign In
+                    </TextBlock>
+                    <Button.Style>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="Background" Value="Red"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Border Background="{TemplateBinding Background}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Cursor" Value="Hand"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Label x:Name="LabelSignUpEmail" Content="Email Address" HorizontalAlignment="Left" Margin="30,110,0,0" VerticalAlignment="Top" Width="150" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" FontSize="15"/>
+
+
+                <TextBox x:Name="TextBoxSignUpEmail" HorizontalAlignment="Center" Height="40" Margin="32,145,33,0" TextWrapping="NoWrap" Text="" VerticalAlignment="Top" Width="335" FontSize="18" VerticalContentAlignment="Center" Padding="10,0,0,0"/>
+
+                <Label x:Name="LabelSignUpEmailError" Content="Email Address is required." HorizontalAlignment="Left" Margin="30,190,0,0" VerticalAlignment="Top" Width="200" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" FontSize="14" Foreground="Red" Visibility="Collapsed"/>
+
+                <Label x:Name="LabelSignUpPassword" Content="Password" HorizontalAlignment="Left" Margin="30,230,0,0" VerticalAlignment="Top" Width="150" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" FontSize="15"/>
+
+                <Label x:Name="LabelSignUpPasswordError" Content="Password does not meet requirements." HorizontalAlignment="Left" Margin="30,310,0,0" VerticalAlignment="Top" Width="200" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" FontSize="14" Foreground="Red" Visibility="Collapsed"/>
+
+                <Button x:Name="ButtonSignUpShowPassword" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,35,0" Background="White" BorderBrush="White" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Click="ButtonSignUpShowPassword_Click">
+                    <TextBlock x:Name="TextBlockButtonSignUpShowPassword" TextDecorations="none" FontSize="15" Foreground="#666666">
+                        Show
+                    </TextBlock>
+                    <Button.Style>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="Background" Value="Red"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Border Background="{TemplateBinding Background}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Cursor" Value="Hand"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Button x:Name="ButtonSignUpHidePassword" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,35,0" Background="White" BorderBrush="White" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Click="ButtonSignUpHidePassword_Click"  Visibility="Collapsed">
+                    <TextBlock x:Name="TextBlockButtonSignUpHidePassword" TextDecorations="none" FontSize="15" Foreground="#666666">
+                        Hide
+                    </TextBlock>
+                    <Button.Style>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="Background" Value="Red"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Border Background="{TemplateBinding Background}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Cursor" Value="Hand"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <PasswordBox x:Name="PassBoxSignUpPassword" HorizontalAlignment="Center" Height="40" Margin="0,265,0,0" VerticalAlignment="Top" Width="335" FontSize="18" VerticalContentAlignment="Center" PasswordChar="*" Padding="10,0,0,0" GotFocus="SignUpPassword_GotFocus" PasswordChanged="PasswordChanged" PreviewKeyDown="SignUpPassword_PreviewKeyDown" LostFocus="SignUpPassword_LostFocus"/>
+
+                <TextBox x:Name="TextBoxSignUpPassword" HorizontalAlignment="Center" Height="40" Margin="0,265,0,0" VerticalAlignment="Top" Width="335" FontSize="18" VerticalContentAlignment="Center" Padding="10,0,0,0" Visibility="Collapsed" GotFocus="SignUpPassword_GotFocus" TextChanged="PasswordChanged" PreviewKeyDown="SignUpPassword_PreviewKeyDown" LostFocus="SignUpPassword_LostFocus"/>
+
+
+                <Button x:Name="ButtonSignUp" Content="Create Account" HorizontalAlignment="Center" VerticalAlignment="Top" Width="335" Height="40" Margin="0,430,0,0" FontSize="18" FontWeight="Bold" Foreground="White" Background="#0066ff" BorderBrush="#3366cc">
+                    <Button.Style>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="Background" Value="#FF1C7BCA"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Name="border" Background="{TemplateBinding Background}" BorderThickness="1" BorderBrush="#FF5397D1" CornerRadius="3">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="Button.IsPressed" Value="True">
+                                                <Setter TargetName="border" Property="BorderBrush" Value="Transparent" />
+                                            </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="Red"/>
+                                                <Setter Property="Cursor" Value="Hand"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Label x:Name="LabelSignUpFail" Content="Incorrect Email or Password" HorizontalAlignment="Center" Margin="0,0,0,110" VerticalAlignment="Bottom" Width="335" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="15" Foreground="Red" BorderBrush="Red" BorderThickness="1" Background="#ffe6e6" Visibility="Collapsed"/>
+
+                <fa:ImageAwesome x:Name="SignUpLoading" Icon="CircleOutlineNotch" Spin="True" SpinDuration="2" Height="30" Width="30" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,34" Foreground="White" Visibility="Collapsed"/>
+
+
+
+                <Border x:Name="BorderPasswordHint" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Center" VerticalAlignment="Bottom" Height="80" Width="336" Margin="0,0,0,110" Visibility="Collapsed">
+                    <Border.Effect>
+                        <DropShadowEffect Color="LightGray" />
+                    </Border.Effect>
+                <Grid HorizontalAlignment="Center" Height="80" Margin="0,0,0,0" VerticalAlignment="Bottom" Width="336" Background="White">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                 <TextBlock x:Name="TextBlockPasswordLength" Grid.Row="0" Text="Password must be at lease 8 characters long." VerticalAlignment="Center" Margin="10,0,10,0" Foreground="Red"/>
+
+                        <TextBlock x:Name="TextBlockPasswordNumber" Grid.Row="1" Text="Password must contain at lease one number." VerticalAlignment="Center" Margin="10,0,10,0" Foreground="Red"/>
+
+                        <TextBlock x:Name="TextBlockPasswordSpecial" Grid.Row="2" Text="Password must contain at lease one special character." VerticalAlignment="Center" Margin="10,0,10,0" Foreground="Red"/>
+
+
+
+
+                    </Grid>
+                </Border>
+
+            </Grid>
+        </Border>
+
 
     </Grid>
 </Window>
