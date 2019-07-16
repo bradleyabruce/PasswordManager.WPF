@@ -15,7 +15,7 @@
 
         <Border x:Name="BorderLogin" BorderBrush="Black"
             BorderThickness="1"
-            CornerRadius="1" Height="500" Width="400">
+            CornerRadius="1" Height="500" Width="400" Visibility="Visible">
             <Border.Effect>
                 <DropShadowEffect Color="LightGray"/>
             </Border.Effect>
@@ -115,6 +115,8 @@
 
                 <Label x:Name="LabelLoginFail" Content="Incorrect Email or Password" HorizontalAlignment="Center" Margin="0,0,0,110" VerticalAlignment="Bottom" Width="335" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="15" Foreground="Red" BorderBrush="Red" BorderThickness="1" Background="#ffe6e6" Visibility="Collapsed"/>
 
+                <Label x:Name="LabelSignUpSuccess" Content="Account has been created!" HorizontalAlignment="Center" Margin="0,0,0,110" VerticalAlignment="Bottom" Width="335" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="15" Foreground="Green" BorderBrush="Green" BorderThickness="1" Background="#e6ffe6" Visibility="Collapsed"/>
+
                 <fa:ImageAwesome x:Name="LoginLoading" Icon="CircleOutlineNotch" Spin="True" SpinDuration="2" Height="30" Width="30" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,34" Foreground="White" Visibility="Collapsed"/>
 
             </Grid>
@@ -166,7 +168,7 @@
 
                 <Label x:Name="LabelSignUpPassword" Content="Password" HorizontalAlignment="Left" Margin="30,230,0,0" VerticalAlignment="Top" Width="150" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" FontSize="15"/>
 
-                <Label x:Name="LabelSignUpPasswordError" Content="Password does not meet requirements." HorizontalAlignment="Left" Margin="30,310,0,0" VerticalAlignment="Top" Width="200" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" FontSize="14" Foreground="Red" Visibility="Collapsed"/>
+                <Label x:Name="LabelSignUpPasswordError" Content="Password does not meet requirements." HorizontalAlignment="Left" Margin="30,310,0,0" VerticalAlignment="Top" Width="250" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" FontSize="14" Foreground="Red" Visibility="Collapsed"/>
 
                 <Button x:Name="ButtonSignUpShowPassword" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,35,0" Background="White" BorderBrush="White" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Click="ButtonSignUpShowPassword_Click">
                     <TextBlock x:Name="TextBlockButtonSignUpShowPassword" TextDecorations="none" FontSize="15" Foreground="#666666">
@@ -223,7 +225,7 @@
                 <TextBox x:Name="TextBoxSignUpPassword" HorizontalAlignment="Center" Height="40" Margin="0,265,0,0" VerticalAlignment="Top" Width="335" FontSize="18" VerticalContentAlignment="Center" Padding="10,0,0,0" Visibility="Collapsed" GotFocus="SignUpPassword_GotFocus" TextChanged="PasswordChanged" PreviewKeyDown="SignUpPassword_PreviewKeyDown" LostFocus="SignUpPassword_LostFocus"/>
 
 
-                <Button x:Name="ButtonSignUp" Content="Create Account" HorizontalAlignment="Center" VerticalAlignment="Top" Width="335" Height="40" Margin="0,430,0,0" FontSize="18" FontWeight="Bold" Foreground="White" Background="#0066ff" BorderBrush="#3366cc">
+                <Button x:Name="ButtonSignUp" Content="Create Account" HorizontalAlignment="Center" VerticalAlignment="Top" Width="335" Height="40" Margin="0,430,0,0" FontSize="18" FontWeight="Bold" Foreground="White" Background="#0066ff" BorderBrush="#3366cc" Click="ButtonSignUp_Click">
                     <Button.Style>
                         <Style TargetType="{x:Type Button}">
                             <Setter Property="Background" Value="#FF1C7BCA"/>
@@ -256,22 +258,25 @@
 
 
 
-                <Border x:Name="BorderPasswordHint" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Center" VerticalAlignment="Bottom" Height="80" Width="336" Margin="0,0,0,110" Visibility="Collapsed">
+                <Border x:Name="BorderPasswordHint" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Center" VerticalAlignment="Bottom" Height="90" Width="336" Margin="0,0,0,100" Visibility="Collapsed">
                     <Border.Effect>
                         <DropShadowEffect Color="LightGray" />
                     </Border.Effect>
-                <Grid HorizontalAlignment="Center" Height="80" Margin="0,0,0,0" VerticalAlignment="Bottom" Width="336" Background="White">
+                <Grid HorizontalAlignment="Center" Height="90" Margin="0,0,0,0" VerticalAlignment="Bottom" Width="336" Background="White">
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
-                 <TextBlock x:Name="TextBlockPasswordLength" Grid.Row="0" Text="Password must be at lease 8 characters long." VerticalAlignment="Center" Margin="10,0,10,0" Foreground="Red"/>
+                 <TextBlock x:Name="TextBlockPasswordLength" Grid.Row="0" Text="Password must be at least 8 characters long." VerticalAlignment="Center" Margin="10,0,10,0" Foreground="Red"/>
 
-                        <TextBlock x:Name="TextBlockPasswordNumber" Grid.Row="1" Text="Password must contain at lease one number." VerticalAlignment="Center" Margin="10,0,10,0" Foreground="Red"/>
+                        <TextBlock x:Name="TextBlockPasswordCapitilize" Grid.Row="1" Text="Password must contain at least one capitalized letter." VerticalAlignment="Center" Margin="10,0,10,0" Foreground="Red"/>
 
-                        <TextBlock x:Name="TextBlockPasswordSpecial" Grid.Row="2" Text="Password must contain at lease one special character." VerticalAlignment="Center" Margin="10,0,10,0" Foreground="Red"/>
+                        <TextBlock x:Name="TextBlockPasswordNumber" Grid.Row="2" Text="Password must contain at least one number." VerticalAlignment="Center" Margin="10,0,10,0" Foreground="Red"/>
+
+                        <TextBlock x:Name="TextBlockPasswordSpecial" Grid.Row="3" Text="Password must contain at least one special character." VerticalAlignment="Center" Margin="10,0,10,0" Foreground="Red"/>
 
 
 

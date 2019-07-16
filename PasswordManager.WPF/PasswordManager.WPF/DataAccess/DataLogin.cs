@@ -92,7 +92,6 @@ namespace PasswordManager.WPF.DataAccess
                 return errorObject;
             }
         }
-
         #endregion
     }
 }

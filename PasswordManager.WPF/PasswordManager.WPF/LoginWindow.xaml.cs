@@ -1,7 +1,6 @@
 ﻿using PasswordManager.WPF.DataAccess;
 using System;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,20 +9,22 @@ using System.Windows.Media;
 
 namespace PasswordManager.WPF
 {
-    /// <summary>
-    /// Interaction logic for Login.xaml
-    /// </summary>
     public partial class Login : Window
     {
+        #region Variables
+
+        DataLogin login = new DataLogin();
+        DataSignUp signup = new DataSignUp();
+        DataUtility dataUtility = new DataUtility();
+
+        #endregion
+
+        #region Constructors
+
         public Login()
         {
             InitializeComponent();
         }
-
-        #region Variables
-
-        DataLogin login = new DataLogin();
-        DataUtility dataUtility = new DataUtility();
 
         #endregion
 
@@ -34,7 +35,7 @@ namespace PasswordManager.WPF
         private void Button_MouseEnter(object sender, MouseEventArgs e)
         {
             Button btn = sender as Button;
-            if(btn.Name == "ButtonLoginSwitch")
+            if (btn.Name == "ButtonLoginSwitch")
             {
                 TextBlockButtonLoginSwitch.TextDecorations = TextDecorations.Underline;
             }
@@ -42,7 +43,7 @@ namespace PasswordManager.WPF
             {
                 TextBlockButtonLoginTrouble.TextDecorations = TextDecorations.Underline;
             }
-            if(btn.Name == "ButtonSignUpSwitch")
+            if (btn.Name == "ButtonSignUpSwitch")
             {
                 TextBlockButtonSignUpSwitch.TextDecorations = TextDecorations.Underline;
             }
@@ -50,7 +51,7 @@ namespace PasswordManager.WPF
             {
                 TextBlockButtonSignUpShowPassword.TextDecorations = TextDecorations.Underline;
             }
-            if(btn.Name == "ButtonSignUpHidePassword")
+            if (btn.Name == "ButtonSignUpHidePassword")
             {
                 TextBlockButtonSignUpHidePassword.TextDecorations = TextDecorations.Underline;
             }
@@ -91,17 +92,20 @@ namespace PasswordManager.WPF
                 LabelLoginEmailError.Visibility = Visibility.Visible;
                 LabelLoginPasswordError.Visibility = Visibility.Collapsed;
                 LabelLoginFail.Visibility = Visibility.Collapsed;
+                LabelSignUpSuccess.Visibility = Visibility.Collapsed;
             }
             else if (password == "")
             {
                 LabelLoginEmailError.Visibility = Visibility.Collapsed;
                 LabelLoginPasswordError.Visibility = Visibility.Visible;
                 LabelLoginFail.Visibility = Visibility.Collapsed;
+                LabelSignUpSuccess.Visibility = Visibility.Collapsed;
             }
             else
             {
                 LabelLoginEmailError.Visibility = Visibility.Collapsed;
                 LabelLoginPasswordError.Visibility = Visibility.Collapsed;
+                LabelSignUpSuccess.Visibility = Visibility.Collapsed;
 
                 string hashedPass = dataUtility.EncodePassword(password);
 
@@ -153,6 +157,7 @@ namespace PasswordManager.WPF
             TextBoxSignUpPassword.Text = hiddenPassword;
             ButtonSignUpHidePassword.Visibility = Visibility.Visible;
             ButtonSignUpShowPassword.Visibility = Visibility.Collapsed;
+            TextBoxSignUpPassword.Focus();
         }
 
         private void ButtonSignUpHidePassword_Click(object sender, RoutedEventArgs e)
@@ -163,66 +168,22 @@ namespace PasswordManager.WPF
             PassBoxSignUpPassword.Password = hiddenPassword;
             ButtonSignUpHidePassword.Visibility = Visibility.Collapsed;
             ButtonSignUpShowPassword.Visibility = Visibility.Visible;
+            PassBoxSignUpPassword.Focus();
         }
-
-
-
-
-
-
-        #endregion
-
-        #endregion
 
         private void SignUpPassword_GotFocus(object sender, RoutedEventArgs e)
         {
             TextBox textbox = sender as TextBox;
-            if(textbox != null)
+            if (textbox != null)
             {
                 BorderPasswordHint.Visibility = Visibility.Visible;
-                ValidatePassword(textbox.Text);
+                ValidatePassword(textbox.Text, true);
             }
             else
             {
                 PasswordBox passbox = sender as PasswordBox;
                 BorderPasswordHint.Visibility = Visibility.Visible;
-                ValidatePassword(passbox.Password);
-            }
-        }
-
-        public void ValidatePassword(string password)
-        {
-            if (password != "")
-            {
-                if (password.Length >= 8)
-                {
-                    TextBlockPasswordLength.Foreground = Brushes.Green;
-                }
-                else
-                {
-                    TextBlockPasswordLength.Foreground = Brushes.Red;
-                }
-                if (password.Any(char.IsDigit))
-                {
-                    TextBlockPasswordNumber.Foreground = Brushes.Green;
-                }
-                else
-                {
-                    TextBlockPasswordNumber.Foreground = Brushes.Red;
-                }
-                //var regexItem = new Regex("[a-z0-9 ]+", RegexOptions.IgnoreCase);
-                if (password.Any(ch => !Char.IsLetterOrDigit(ch)))
-                {
-                    TextBlockPasswordSpecial.Foreground = Brushes.Green;
-                }
-                else
-                {
-                    TextBlockPasswordSpecial.Foreground = Brushes.Red;
-                }
-            }
-            else
-            {
-                TextBlockPasswordSpecial.Foreground = Brushes.Red;
+                ValidatePassword(passbox.Password, true);
             }
         }
 
@@ -231,18 +192,18 @@ namespace PasswordManager.WPF
             TextBox textbox = sender as TextBox;
             if (textbox != null)
             {
-                ValidatePassword(textbox.Text);
+                ValidatePassword(textbox.Text, true);
             }
             else
             {
                 PasswordBox passbox = sender as PasswordBox;
-                ValidatePassword(passbox.Password);
+                ValidatePassword(passbox.Password, true);
             }
         }
 
         private void SignUpPassword_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if(e.Key == Key.Space)
+            if (e.Key == Key.Space)
             {
                 e.Handled = true;
             }
@@ -261,5 +222,128 @@ namespace PasswordManager.WPF
                 BorderPasswordHint.Visibility = Visibility.Collapsed;
             }
         }
+
+        private async void ButtonSignUp_Click(object sender, RoutedEventArgs e)
+        {
+            string email = TextBoxSignUpEmail.Text;
+            string password = null;
+            if (PassBoxSignUpPassword.Visibility == Visibility.Visible)
+            {
+                password = PassBoxSignUpPassword.Password;
+            }
+            else
+            {
+                password = TextBoxSignUpPassword.Text;
+            }
+
+            if (email == "" || email == null)
+            {
+                LabelSignUpEmailError.Visibility = Visibility.Visible;
+                LabelSignUpPasswordError.Visibility = Visibility.Collapsed;
+                LabelSignUpFail.Visibility = Visibility.Collapsed;
+                LabelSignUpSuccess.Visibility = Visibility.Collapsed;
+            }
+            else if (ValidatePassword(password, false) == false)
+            {
+                LabelSignUpEmailError.Visibility = Visibility.Collapsed;
+                LabelSignUpPasswordError.Visibility = Visibility.Visible;
+                LabelSignUpFail.Visibility = Visibility.Collapsed;
+                LabelSignUpSuccess.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                string hashedPassword = dataUtility.EncodePassword(password);
+
+                Task<bool> SignUpAsync = signup.UserSignUp(email, hashedPassword);
+
+                SignUpLoading.Visibility = Visibility.Visible;
+                ButtonSignUp.Content = "";
+
+                bool signupResult = await SignUpAsync;
+
+                if (signupResult == false)
+                {
+                    LabelSignUpFail.Visibility = Visibility.Visible;
+                    LabelSignUpSuccess.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    BorderSignUp.Visibility = Visibility.Collapsed;
+                    BorderLogin.Visibility = Visibility.Visible;
+
+                    TextBoxSignUpEmail.Text = "";
+                    PassBoxSignUpPassword.Password = "";
+                    PassBoxSignUpPassword.Visibility = Visibility.Visible;
+                    TextBoxSignUpPassword.Visibility = Visibility.Collapsed;
+                    TextBoxLoginEmail.Text = "";
+                    TextBoxLoginPassword.Password = "";
+
+                    LabelSignUpSuccess.Visibility = Visibility.Visible;
+
+                }
+                SignUpLoading.Visibility = Visibility.Collapsed;
+                ButtonSignUp.Content = "Create Account";
+            }
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Methods
+
+        public bool ValidatePassword(string password, bool changeLabels)
+        {
+            bool length = false;
+            bool cap = false;
+            bool num = false;
+            bool special = false;
+
+            if (password != "")
+            {
+                if (password.Length >= 8) length = true;
+                else length = false;
+
+                if (password.Any(char.IsUpper)) cap = true;
+                else cap = false;
+
+                if (password.Any(char.IsDigit)) num = true;
+                else num = false;
+
+                if (password.Any(ch => !Char.IsLetterOrDigit(ch))) special = true;
+                else special = false;
+            }
+            else
+            {
+                length = false;
+                cap = false;
+                num = false;
+                special = false;
+            }
+
+            if (changeLabels == true)
+            {
+                if (length) TextBlockPasswordLength.Foreground = Brushes.Green;
+                else TextBlockPasswordLength.Foreground = Brushes.Red;
+
+                if (cap) TextBlockPasswordCapitilize.Foreground = Brushes.Green;
+                else TextBlockPasswordCapitilize.Foreground = Brushes.Red;
+
+                if (num) TextBlockPasswordNumber.Foreground = Brushes.Green;
+                else TextBlockPasswordNumber.Foreground = Brushes.Red;
+
+                if (special) TextBlockPasswordSpecial.Foreground = Brushes.Green;
+                else TextBlockPasswordSpecial.Foreground = Brushes.Red;
+            }
+            else
+            {
+                if (length == true && cap == true && num == true && special == true) return true;
+                else return false;
+            }
+            return false;
+        }
+
+        #endregion
     }
 }
+
