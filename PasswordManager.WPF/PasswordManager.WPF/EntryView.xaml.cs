@@ -24,10 +24,7 @@ namespace PasswordManager.WPF
 
         public EntryView()
         {
-            InitializeComponent();
-
-            
-
+            InitializeComponent();          
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -41,13 +38,7 @@ namespace PasswordManager.WPF
 
         #endregion
 
-        #region
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            GridLength gl = new GridLength(500);
-            ColumnDefinitionMenu.Width = gl;
-        }
+        #region Nav Events
 
         private void ButtonUserMenu_MouseEnter(object sender, MouseEventArgs e)
         {
@@ -73,6 +64,55 @@ namespace PasswordManager.WPF
             {
                 BorderUserSettings.Visibility = Visibility.Collapsed;
             }
+        }
+
+        #region Menu Events
+
+        private void IconMenuOpen_MouseEnter(object sender, MouseEventArgs e)
+        {
+            IconMenuOpen.Height = 42;
+            IconMenuOpen.Width = 42;
+            this.Cursor = Cursors.Hand;
+        }
+
+        private void IconMenuOpen_MouseLeave(object sender, MouseEventArgs e)
+        {
+            IconMenuOpen.Height = 40;
+            IconMenuOpen.Width = 40;
+            this.Cursor = Cursors.Arrow;
+        }
+
+        #endregion
+
+        private void IconMenuOpen_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            GridLength closedMenu = new GridLength(80);
+            GridLength openedMenu = new GridLength(320);
+
+            if(ColumnDefinitionMenu.Width == closedMenu)
+            {
+                ColumnDefinitionMenu.Width = openedMenu;
+                IconMenuOpen.Icon = FontAwesome.WPF.FontAwesomeIcon.ChevronCircleLeft;
+            }
+            else
+            {
+                ColumnDefinitionMenu.Width = closedMenu;
+                IconMenuOpen.Icon = FontAwesome.WPF.FontAwesomeIcon.ChevronCircleRight;
+            }
+        }
+
+        private void Grid_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Grid grid = sender as Grid;
+            var converter = new BrushConverter();
+            grid.Background = (Brush)converter.ConvertFrom("#666666");
+        }
+
+        private void Grid_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Grid grid = sender as Grid;
+            var converter = new BrushConverter();
+            grid.Background = (Brush)converter.ConvertFrom("#808080");
         }
     }
 }
