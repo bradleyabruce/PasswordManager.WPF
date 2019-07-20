@@ -93,6 +93,7 @@ namespace PasswordManager.WPF
                 LabelLoginPasswordError.Visibility = Visibility.Collapsed;
                 LabelLoginFail.Visibility = Visibility.Collapsed;
                 LabelSignUpSuccess.Visibility = Visibility.Collapsed;
+                LabelServerFail.Visibility = Visibility.Collapsed;
             }
             else if (password == "")
             {
@@ -100,32 +101,38 @@ namespace PasswordManager.WPF
                 LabelLoginPasswordError.Visibility = Visibility.Visible;
                 LabelLoginFail.Visibility = Visibility.Collapsed;
                 LabelSignUpSuccess.Visibility = Visibility.Collapsed;
+                LabelServerFail.Visibility = Visibility.Collapsed;
             }
             else
             {
                 LabelLoginEmailError.Visibility = Visibility.Collapsed;
                 LabelLoginPasswordError.Visibility = Visibility.Collapsed;
                 LabelSignUpSuccess.Visibility = Visibility.Collapsed;
+                LabelServerFail.Visibility = Visibility.Collapsed;
 
                 string hashedPass = dataUtility.EncodePassword(password);
 
-                Task<bool> loginAsync = login.UserLogin(email, hashedPass);
+                Task<int> loginAsync = login.UserLogin(email, hashedPass);
 
                 LoginLoading.Visibility = Visibility.Visible;
                 ButtonLogin.Content = "";
 
-                bool loginResult = await loginAsync;
+                int loginResult = await loginAsync;
 
-                if (loginResult) { 
+                if (loginResult == 1) { 
 
                 EntryView entryView = new EntryView();
                 this.Close();
                 entryView.ShowDialog();
 
                 }
-                else
+                else if(loginResult == 0)
                 {
                     LabelLoginFail.Visibility = Visibility.Visible;
+                }
+                else if(loginResult == -1)
+                {
+                    LabelServerFail.Visibility = Visibility.Visible;
                 }
 
                 LoginLoading.Visibility = Visibility.Collapsed;

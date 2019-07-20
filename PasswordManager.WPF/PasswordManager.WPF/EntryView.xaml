@@ -12,7 +12,7 @@
         Loaded="Window_Loaded" 
         d:DesignHeight="1080"
 	    d:DesignWidth="1920"
-        MinHeight="800"
+        MinHeight="600"
         MinWidth="1200">
     <Grid x:Name="MainGrid">
         <Grid.RowDefinitions>
@@ -26,7 +26,7 @@
 
         <!-- Nav Grid-->
         <Grid x:Name="NavGrid" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" Background="#4d4d4d" Grid.ColumnSpan="2">
-            
+
             <Button x:Name="ButtonAdd" Content="Add" HorizontalAlignment="Left" VerticalAlignment="Center" Width="135" Height="45" Margin="30,0,0,0" FontSize="18" FontWeight="Bold" Foreground="White" Background="#0066ff" BorderBrush="#3366cc">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
@@ -81,7 +81,7 @@
                 </Button.Style>
             </Button>
 
-            
+
 
 
 
@@ -89,29 +89,35 @@
         <!-- Header Grid -->
 
         <!-- Menu Grid -->
-        <Grid x:Name="MenuGrid" HorizontalAlignment="Stretch" Height="{Binding ActualHeight, ElementName=MainGrid, Mode=OneWay}" VerticalAlignment="Top" Background="Gray" Grid.Column="0" Grid.Row="1">
+        <ScrollViewer x:Name="MenuScrollViewer" Grid.Column="0" Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <Grid x:Name="MenuGrid">
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="80"/>
-            </Grid.RowDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="70"/>
+                    <RowDefinition Height="70"/>
+                    <RowDefinition Height="600"/>
+                </Grid.RowDefinitions>
 
-            <Grid x:Name="GridCollapse" Grid.Row="0" MouseEnter="Grid_MouseEnter" MouseLeave="Grid_MouseLeave">
-                <fa:ImageAwesome x:Name="IconMenuOpen" Icon="ChevronCircleLeft" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" Height="30" Width="30" Margin="50,00,0,0"/>
-                <Label x:Name="LabelGridCollapse" Margin="100,0,0,0" Content="Collapse" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="20" FontWeight="Bold"></Label>
+                <Grid x:Name="MenuCollapse" Grid.Row="0" MouseEnter="Grid_MouseEnter" MouseLeave="Grid_MouseLeave" Background="Gray">
+                    <fa:ImageAwesome x:Name="IconMenuOpen" Icon="ArrowLeft"  Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" Height="30" Width="30" Margin="40,00,0,0"/>
+                    <Label x:Name="LabelGridCollapse" Margin="100,0,0,0" Content="Collapse" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="20" FontWeight="Bold"/>
+                </Grid>
+
+                <Grid x:Name="MenuHome" Grid.Row="1" MouseEnter="Grid_MouseEnter" MouseLeave="Grid_MouseLeave" Background="Gray">
+                    <fa:ImageAwesome x:Name="IconMenuHome" Icon="Unlock" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" Height="30" Width="30" Margin="40,00,0,0"/>
+                    <Label x:Name="LabelGridHome" Margin="100,0,0,0" Content="Passwords" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="20" FontWeight="Bold"/>
+                </Grid>
+
+                <Grid x:Name="BlankArea" Grid.Row="2" Background="gray"/>
+
+
+
+
+
+
+
             </Grid>
-
-            <Grid Grid.Row="1" Background="Blue">
-
-            </Grid>
-
-
-
-            
-
-
-
-        </Grid>
+        </ScrollViewer>
         <!-- End Menu Grid -->
 
         <!-- Body Grid -->
@@ -120,17 +126,19 @@
 
             <Border x:Name="BorderUserSettings" BorderBrush="#0066ff"
             BorderThickness="1"
-            CornerRadius="3" Height="200" Width="350" Visibility="Visible" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,2,30,0" Background="White">
+            CornerRadius="3" Height="200" Width="350" Visibility="Visible" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,2,30,0" Background="White" Panel.ZIndex="0">
                 <Border.Effect>
                     <DropShadowEffect Color="LightGray"/>
                 </Border.Effect>
-                <Grid x:Name="GridUserSettings" >
+                <Grid x:Name="GridUserSettings" Background="White">
 
                 </Grid>
             </Border>
+            
+            <TextBox x:Name="TextBoxSearch" HorizontalAlignment="Left" VerticalAlignment="Top" Height="36" Margin="40,40,0,0" TextWrapping="NoWrap" Text=""  Width="1270" FontSize="24" Background="LightGray" Panel.ZIndex="1"/>
 
 
-          
+
         </Grid>
 
 

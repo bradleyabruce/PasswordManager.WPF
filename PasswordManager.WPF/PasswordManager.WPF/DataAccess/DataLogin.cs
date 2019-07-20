@@ -19,7 +19,7 @@ namespace PasswordManager.WPF.DataAccess
 
         #region Methods
 
-        public async Task<bool> UserLogin(string email, string hashedPassword)
+        public async Task<int> UserLogin(string email, string hashedPassword)
         {
             DataUtility.IgnoreBadCertificates();
 
@@ -35,7 +35,7 @@ namespace PasswordManager.WPF.DataAccess
             //validate
             if (request == null)
             {
-                return false;
+                return -1;
             }
 
             LoginObject loginObject = await Task.Run(() => ReceiveLoginHttp(request));
@@ -43,7 +43,7 @@ namespace PasswordManager.WPF.DataAccess
             //validate
             if (loginObject.Result == false)
             {
-                return false;
+                return 0;
             }
             else
             {
@@ -58,11 +58,11 @@ namespace PasswordManager.WPF.DataAccess
                         App.Current.Properties["UserID"] = userID;
                         App.Current.Properties["UserEmail"] = userEmail;
                     }
-                    else { return false; }
+                    else { return 0; }
                 }
-                else { return false; }
+                else { return 0; }
 
-                return true;
+                return 1;
             }
         }
 

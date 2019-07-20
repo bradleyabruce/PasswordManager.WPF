@@ -115,6 +115,8 @@
 
                 <Label x:Name="LabelLoginFail" Content="Incorrect Email or Password" HorizontalAlignment="Center" Margin="0,0,0,110" VerticalAlignment="Bottom" Width="335" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="15" Foreground="Red" BorderBrush="Red" BorderThickness="1" Background="#ffe6e6" Visibility="Collapsed"/>
 
+                <Label x:Name="LabelServerFail" Content="Trouble Signing in. Try again later." HorizontalAlignment="Center" Margin="0,0,0,110" VerticalAlignment="Bottom" Width="335" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="15" Foreground="Red" BorderBrush="Red" BorderThickness="1" Background="#ffe6e6" Visibility="Collapsed"/>
+
                 <Label x:Name="LabelSignUpSuccess" Content="Account has been created!" HorizontalAlignment="Center" Margin="0,0,0,110" VerticalAlignment="Bottom" Width="335" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="15" Foreground="Green" BorderBrush="Green" BorderThickness="1" Background="#e6ffe6" Visibility="Collapsed"/>
 
                 <fa:ImageAwesome x:Name="LoginLoading" Icon="CircleOutlineNotch" Spin="True" SpinDuration="2" Height="30" Width="30" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,34" Foreground="White" Visibility="Collapsed"/>

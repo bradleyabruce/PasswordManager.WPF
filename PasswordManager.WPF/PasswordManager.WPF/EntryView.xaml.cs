@@ -68,44 +68,14 @@ namespace PasswordManager.WPF
 
         #region Menu Events
 
-        private void IconMenuOpen_MouseEnter(object sender, MouseEventArgs e)
-        {
-            IconMenuOpen.Height = 42;
-            IconMenuOpen.Width = 42;
-            this.Cursor = Cursors.Hand;
-        }
-
-        private void IconMenuOpen_MouseLeave(object sender, MouseEventArgs e)
-        {
-            IconMenuOpen.Height = 40;
-            IconMenuOpen.Width = 40;
-            this.Cursor = Cursors.Arrow;
-        }
-
         #endregion
-
-        private void IconMenuOpen_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            GridLength closedMenu = new GridLength(80);
-            GridLength openedMenu = new GridLength(320);
-
-            if(ColumnDefinitionMenu.Width == closedMenu)
-            {
-                ColumnDefinitionMenu.Width = openedMenu;
-                IconMenuOpen.Icon = FontAwesome.WPF.FontAwesomeIcon.ChevronCircleLeft;
-            }
-            else
-            {
-                ColumnDefinitionMenu.Width = closedMenu;
-                IconMenuOpen.Icon = FontAwesome.WPF.FontAwesomeIcon.ChevronCircleRight;
-            }
-        }
 
         private void Grid_MouseEnter(object sender, MouseEventArgs e)
         {
             Grid grid = sender as Grid;
             var converter = new BrushConverter();
             grid.Background = (Brush)converter.ConvertFrom("#666666");
+            this.Cursor = Cursors.Hand;
         }
 
         private void Grid_MouseLeave(object sender, MouseEventArgs e)
@@ -113,6 +83,7 @@ namespace PasswordManager.WPF
             Grid grid = sender as Grid;
             var converter = new BrushConverter();
             grid.Background = (Brush)converter.ConvertFrom("#808080");
+            this.Cursor = Cursors.Arrow;
         }
     }
 }
