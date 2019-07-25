@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using PasswordManager.WPF;
+using PasswordManager.WPF.DataAccess;
 
 namespace PasswordManager.WPF
 {
@@ -31,9 +33,9 @@ namespace PasswordManager.WPF
         {
             string userID = App.Current.Properties["UserID"].ToString();
             string email = App.Current.Properties["UserEmail"].ToString();
-
-            ButtonUser.Content = email + " ⯆";
-
+            ButtonUser.Content =":)";
+            UserSettingsEmailLabel.Content = email;
+            UserSettingsUserNameLabel.Content = email;
         }
 
         #endregion
@@ -84,6 +86,38 @@ namespace PasswordManager.WPF
             var converter = new BrushConverter();
             grid.Background = (Brush)converter.ConvertFrom("#808080");
             this.Cursor = Cursors.Arrow;
+        }
+
+        private void TextButton_MouseEnter(object sender, MouseEventArgs e)
+        {
+            TextBlock textBlock = sender as TextBlock;
+            if(textBlock != null)
+            {
+                textBlock.TextDecorations = TextDecorations.Underline;
+                this.Cursor = Cursors.Hand;
+            }
+        }
+
+        private void TextButton_MouseLeave(object sender, MouseEventArgs e)
+        {
+            TextBlock textBlock = sender as TextBlock;
+            if (textBlock != null)
+            {
+                textBlock.TextDecorations = null; ;
+                this.Cursor = Cursors.Arrow;
+            }
+        }
+
+        private void UserSettingsSignOut_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            App.Current.Properties["UserID"] = null;
+            App.Current.Properties["UserEmail"] = null;
+
+            LoginWindow login = new LoginWindow();
+            this.Close();
+            login.ShowDialog();
+            login.HorizontalAlignment = HorizontalAlignment.Center;
+            login.VerticalAlignment = VerticalAlignment.Center;
         }
     }
 }

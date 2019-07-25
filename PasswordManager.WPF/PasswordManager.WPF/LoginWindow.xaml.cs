@@ -9,7 +9,7 @@ using System.Windows.Media;
 
 namespace PasswordManager.WPF
 {
-    public partial class Login : Window
+    public partial class LoginWindow : Window
     {
         #region Variables
 
@@ -21,7 +21,7 @@ namespace PasswordManager.WPF
 
         #region Constructors
 
-        public Login()
+        public LoginWindow()
         {
             InitializeComponent();
         }
