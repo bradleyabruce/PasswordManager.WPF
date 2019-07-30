@@ -1,5 +1,6 @@
 ﻿using PasswordManager.WPF.DataAccess;
 using System;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -84,59 +85,72 @@ namespace PasswordManager.WPF
 
         private async void ButtonLogin_Click(object sender, RoutedEventArgs e)
         {
-            string email = TextBoxLoginEmail.Text.ToLower();
-            string password = TextBoxLoginPassword.Password;
+            //modifier for advanced options
+            if (Keyboard.IsKeyDown(Key.LeftCtrl) && Keyboard.IsKeyDown(Key.LeftShift) && Keyboard.IsKeyDown(Key.D))
+            {
+                AdvancedLogin advLogin = new AdvancedLogin();
+                advLogin.Owner = this;
+                advLogin.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                advLogin.ShowDialog();
+            }
 
-            if (email == "")
-            {
-                LabelLoginEmailError.Visibility = Visibility.Visible;
-                LabelLoginPasswordError.Visibility = Visibility.Collapsed;
-                LabelLoginFail.Visibility = Visibility.Collapsed;
-                LabelSignUpSuccess.Visibility = Visibility.Collapsed;
-                LabelServerFail.Visibility = Visibility.Collapsed;
-            }
-            else if (password == "")
-            {
-                LabelLoginEmailError.Visibility = Visibility.Collapsed;
-                LabelLoginPasswordError.Visibility = Visibility.Visible;
-                LabelLoginFail.Visibility = Visibility.Collapsed;
-                LabelSignUpSuccess.Visibility = Visibility.Collapsed;
-                LabelServerFail.Visibility = Visibility.Collapsed;
-            }
             else
             {
-                LabelLoginEmailError.Visibility = Visibility.Collapsed;
-                LabelLoginPasswordError.Visibility = Visibility.Collapsed;
-                LabelSignUpSuccess.Visibility = Visibility.Collapsed;
-                LabelServerFail.Visibility = Visibility.Collapsed;
+                string email = TextBoxLoginEmail.Text.ToLower();
+                string password = TextBoxLoginPassword.Password;
 
-                string hashedPass = dataUtility.EncodePassword(password);
-
-                Task<int> loginAsync = login.UserLogin(email, hashedPass);
-
-                LoginLoading.Visibility = Visibility.Visible;
-                ButtonLogin.Content = "";
-
-                int loginResult = await loginAsync;
-
-                if (loginResult == 1) { 
-
-                EntryView entryView = new EntryView();
-                this.Close();
-                entryView.ShowDialog();
-
-                }
-                else if(loginResult == 0)
+                if (email == "")
                 {
-                    LabelLoginFail.Visibility = Visibility.Visible;
+                    LabelLoginEmailError.Visibility = Visibility.Visible;
+                    LabelLoginPasswordError.Visibility = Visibility.Collapsed;
+                    LabelLoginFail.Visibility = Visibility.Collapsed;
+                    LabelSignUpSuccess.Visibility = Visibility.Collapsed;
+                    LabelServerFail.Visibility = Visibility.Collapsed;
                 }
-                else if(loginResult == -1)
+                else if (password == "")
                 {
-                    LabelServerFail.Visibility = Visibility.Visible;
+                    LabelLoginEmailError.Visibility = Visibility.Collapsed;
+                    LabelLoginPasswordError.Visibility = Visibility.Visible;
+                    LabelLoginFail.Visibility = Visibility.Collapsed;
+                    LabelSignUpSuccess.Visibility = Visibility.Collapsed;
+                    LabelServerFail.Visibility = Visibility.Collapsed;
                 }
+                else
+                {
+                    LabelLoginEmailError.Visibility = Visibility.Collapsed;
+                    LabelLoginPasswordError.Visibility = Visibility.Collapsed;
+                    LabelSignUpSuccess.Visibility = Visibility.Collapsed;
+                    LabelServerFail.Visibility = Visibility.Collapsed;
 
-                LoginLoading.Visibility = Visibility.Collapsed;
-                ButtonLogin.Content = "Sign In";
+                    string hashedPass = dataUtility.EncodePassword(password);
+
+                    Task<int> loginAsync = login.UserLogin(email, hashedPass);
+
+                    LoginLoading.Visibility = Visibility.Visible;
+                    ButtonLogin.Content = "";
+
+                    int loginResult = await loginAsync;
+
+                    if (loginResult == 1)
+                    {
+
+                        EntryView entryView = new EntryView();
+                        this.Close();
+                        entryView.ShowDialog();
+
+                    }
+                    else if (loginResult == 0)
+                    {
+                        LabelLoginFail.Visibility = Visibility.Visible;
+                    }
+                    else if (loginResult == -1)
+                    {
+                        LabelServerFail.Visibility = Visibility.Visible;
+                    }
+
+                    LoginLoading.Visibility = Visibility.Collapsed;
+                    ButtonLogin.Content = "Sign In";
+                }
             }
         }
 
@@ -351,6 +365,7 @@ namespace PasswordManager.WPF
         }
 
         #endregion
+
     }
 }
 
