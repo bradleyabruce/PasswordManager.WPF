@@ -23,7 +23,7 @@ namespace PasswordManager.WPF.DataAccess
         {
             DataUtility.IgnoreBadCertificates();
 
-            string signUpUrl = ConfigurationManager.AppSettings["BaseUrl"] + ConfigurationManager.AppSettings["SignUpFunction"];
+            string signUpUrl = ConfigurationManager.AppSettings["ServerAddress"] + ConfigurationManager.AppSettings["SignUpFunction"];
             string json = "{\"email\": \"" + email + "\", \"password\": \"" + hashedPassword + "\"}";
 
             HttpWebRequest request = await Task.Run(() => dataUtility.SendHttp(json, signUpUrl));

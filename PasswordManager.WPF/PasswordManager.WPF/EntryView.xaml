@@ -121,7 +121,7 @@
         <!-- End Menu Grid -->
 
         <!-- Body Grid -->
-        <Grid x:Name="BodyGrid" HorizontalAlignment="Stretch" Height="{Binding ActualHeight, ElementName=MainGrid, Mode=OneWay}" VerticalAlignment="Top" Background="white" Grid.Column="1" Grid.Row="1">
+        <Grid x:Name="BodyGrid" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" Background="white" Grid.Column="1" Grid.Row="1">
 
 
             <Border Panel.ZIndex="10" x:Name="BorderUserSettings" BorderBrush="#0066ff"

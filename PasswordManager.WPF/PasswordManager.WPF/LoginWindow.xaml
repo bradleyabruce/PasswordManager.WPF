@@ -51,7 +51,7 @@
                 <Label x:Name="LabelLoginEmail" Content="Email Address" HorizontalAlignment="Left" Margin="30,110,0,0" VerticalAlignment="Top" Width="150" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" FontSize="15"/>
 
 
-                <TextBox x:Name="TextBoxLoginEmail" HorizontalAlignment="Center" Height="40" Margin="32,145,33,0" TextWrapping="NoWrap" Text="" VerticalAlignment="Top" Width="335" FontSize="18" VerticalContentAlignment="Center" Padding="10,0,0,0"/>
+                <TextBox x:Name="TextBoxLoginEmail" HorizontalAlignment="Center" Height="40" Margin="0,145,0,0" TextWrapping="NoWrap" Text="" VerticalAlignment="Top" Width="335" FontSize="18" VerticalContentAlignment="Center" Padding="10,0,0,0"/>
 
                 <Label x:Name="LabelLoginEmailError" Content="Email Address is required." HorizontalAlignment="Left" Margin="30,190,0,0" VerticalAlignment="Top" Width="200" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" FontSize="14" Foreground="Red" Visibility="Collapsed"/>
 
@@ -119,7 +119,7 @@
 
                 <Label x:Name="LabelSignUpSuccess" Content="Account has been created!" HorizontalAlignment="Center" Margin="0,0,0,110" VerticalAlignment="Bottom" Width="335" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="15" Foreground="Green" BorderBrush="Green" BorderThickness="1" Background="#e6ffe6" Visibility="Collapsed"/>
 
-                <fa:ImageAwesome x:Name="LoginLoading" Icon="CircleOutlineNotch" Spin="True" SpinDuration="2" Height="30" Width="30" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,34" Foreground="White" Visibility="Collapsed"/>
+                <fa:ImageAwesome x:Name="LoginLoading" Icon="Refresh" Spin="True" SpinDuration="2" Height="28" Width="28" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,35" Foreground="White" Visibility="Collapsed"/>
 
             </Grid>
         </Border>

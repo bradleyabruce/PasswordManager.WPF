@@ -27,7 +27,7 @@ namespace PasswordManager.WPF.DataAccess
             string userEmail = "";
             string userPassword = "";
 
-            string loginUrl = ConfigurationManager.AppSettings["BaseUrl"] + ConfigurationManager.AppSettings["LoginFunction"];
+            string loginUrl = ConfigurationManager.AppSettings["ServerAddress"] + ConfigurationManager.AppSettings["LoginFunction"];
             string json = "{\"email\": \"" + email + "\", \"password\": \"" + hashedPassword + "\"}";
 
             HttpWebRequest request = await Task.Run(() => dataUtility.SendHttp(json, loginUrl));

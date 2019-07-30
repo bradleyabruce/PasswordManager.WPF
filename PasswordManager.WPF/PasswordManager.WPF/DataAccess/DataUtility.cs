@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.IO;
 using System.Net;
 using System.Security.Cryptography;
@@ -12,35 +13,39 @@ namespace PasswordManager.WPF.DataAccess
 
         public HttpWebRequest SendHttp(string json, string url)
         {
-            Uri uri = CreateURI(url);
-
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
-            request.Method = "POST";
-            request.ContentType = "application/json";
-
             try
             {
+                Uri uri = CreateURI(url);
+
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
+                request.Method = "POST";
+                request.ContentType = "application/json";
+
                 using (var streamWriter = new StreamWriter(request.GetRequestStream()))
                 {
                     streamWriter.Write(json);
                     streamWriter.Flush();
                     streamWriter.Close();
                 }
+                return request;
             }
             catch (Exception e)
             {
                 return null;
             }
-            return request;
         }
 
         public Uri CreateURI(string url)
         {
-            Uri uri = new Uri(url);
-            var builder = new UriBuilder(uri);
-            builder.Port = 1337;
-            uri = builder.Uri;
-            return uri;
+            try
+            {
+                Uri uri = new Uri(url);
+                var builder = new UriBuilder(uri);
+                builder.Port = Int32.Parse(ConfigurationManager.AppSettings["Port"]);
+                uri = builder.Uri;
+                return uri;
+            }
+            catch { return null; }
         }
 
         public string EncodePassword(string password)
