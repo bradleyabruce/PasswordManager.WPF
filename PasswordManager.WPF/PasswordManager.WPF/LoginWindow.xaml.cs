@@ -103,24 +103,16 @@ namespace PasswordManager.WPF
                 {
                     LabelLoginEmailError.Visibility = Visibility.Visible;
                     LabelLoginPasswordError.Visibility = Visibility.Collapsed;
-                    LabelLoginFail.Visibility = Visibility.Collapsed;
-                    LabelSignUpSuccess.Visibility = Visibility.Collapsed;
-                    LabelServerFail.Visibility = Visibility.Collapsed;
                 }
                 else if (password == "")
                 {
                     LabelLoginEmailError.Visibility = Visibility.Collapsed;
                     LabelLoginPasswordError.Visibility = Visibility.Visible;
-                    LabelLoginFail.Visibility = Visibility.Collapsed;
-                    LabelSignUpSuccess.Visibility = Visibility.Collapsed;
-                    LabelServerFail.Visibility = Visibility.Collapsed;
                 }
                 else
                 {
                     LabelLoginEmailError.Visibility = Visibility.Collapsed;
                     LabelLoginPasswordError.Visibility = Visibility.Collapsed;
-                    LabelSignUpSuccess.Visibility = Visibility.Collapsed;
-                    LabelServerFail.Visibility = Visibility.Collapsed;
 
                     string hashedPass = dataUtility.EncodePassword(password);
 
@@ -131,25 +123,27 @@ namespace PasswordManager.WPF
 
                     int loginResult = await loginAsync;
 
+                    LoginLoading.Visibility = Visibility.Collapsed;
+                    ButtonLogin.Content = "Sign In";
+
                     if (loginResult == 1)
                     {
-
                         EntryView entryView = new EntryView();
                         this.Close();
                         entryView.ShowDialog();
-
                     }
                     else if (loginResult == 0)
                     {
-                        LabelLoginFail.Visibility = Visibility.Visible;
+                        DialogWindow dialog = new DialogWindow("Login Failed.", "Incorrect email or password.", "icon");
+                        dialog.Owner = this;
+                        dialog.ShowDialog();
                     }
                     else if (loginResult == -1)
                     {
-                        LabelServerFail.Visibility = Visibility.Visible;
+                        DialogWindow dialog = new DialogWindow("Trouble Connecting to Server.", "Try again later.", "icon");
+                        dialog.Owner = this;
+                        dialog.ShowDialog();
                     }
-
-                    LoginLoading.Visibility = Visibility.Collapsed;
-                    ButtonLogin.Content = "Sign In";
                 }
             }
         }
@@ -179,6 +173,7 @@ namespace PasswordManager.WPF
             ButtonSignUpHidePassword.Visibility = Visibility.Visible;
             ButtonSignUpShowPassword.Visibility = Visibility.Collapsed;
             TextBoxSignUpPassword.Focus();
+            TextBoxSignUpPassword.SelectionStart = TextBoxSignUpPassword.Text.Length;
         }
 
         private void ButtonSignUpHidePassword_Click(object sender, RoutedEventArgs e)
@@ -262,30 +257,31 @@ namespace PasswordManager.WPF
                 LabelSignUpEmailError.Visibility = Visibility.Visible;
                 LabelSignUpPasswordError.Visibility = Visibility.Collapsed;
                 LabelSignUpFail.Visibility = Visibility.Collapsed;
-                LabelSignUpSuccess.Visibility = Visibility.Collapsed;
             }
             else if (ValidatePassword(password, false) == false)
             {
                 LabelSignUpEmailError.Visibility = Visibility.Collapsed;
                 LabelSignUpPasswordError.Visibility = Visibility.Visible;
                 LabelSignUpFail.Visibility = Visibility.Collapsed;
-                LabelSignUpSuccess.Visibility = Visibility.Collapsed;
             }
             else
             {
                 string hashedPassword = dataUtility.EncodePassword(password);
 
-                Task<bool> SignUpAsync = signup.UserSignUp(email, hashedPassword);
+                Task<int> SignUpAsync = signup.UserSignUp(email, hashedPassword);
 
                 SignUpLoading.Visibility = Visibility.Visible;
                 ButtonSignUp.Content = "";
 
-                bool signupResult = await SignUpAsync;
+                int signupResult = await SignUpAsync;
 
-                if (signupResult == false)
+                SignUpLoading.Visibility = Visibility.Collapsed;
+                ButtonSignUp.Content = "Create Account";
+
+                if (signupResult < 1)
                 {
                     LabelSignUpFail.Visibility = Visibility.Visible;
-                    LabelSignUpSuccess.Visibility = Visibility.Collapsed;
+                    BorderPasswordHint.Visibility = Visibility.Collapsed;
                 }
                 else
                 {
@@ -299,11 +295,10 @@ namespace PasswordManager.WPF
                     TextBoxLoginEmail.Text = "";
                     TextBoxLoginPassword.Password = "";
 
-                    LabelSignUpSuccess.Visibility = Visibility.Visible;
-
+                    DialogWindow dialog = new DialogWindow("Success!", "You have been signed up.", "icon");
+                    dialog.Owner = this;
+                    dialog.ShowDialog();
                 }
-                SignUpLoading.Visibility = Visibility.Collapsed;
-                ButtonSignUp.Content = "Create Account";
             }
         }
 

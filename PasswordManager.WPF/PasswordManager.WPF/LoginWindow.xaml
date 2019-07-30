@@ -10,7 +10,8 @@
         d:DesignWidth="1000"
         d:DesignHeight="1000"
         Height="799"
-        Width="1000">
+        Width="1000"
+        WindowStartupLocation="CenterScreen">
     <Grid Background="#f2f2f2">
 
         <Border x:Name="BorderLogin" BorderBrush="Black"
@@ -51,7 +52,7 @@
                 <Label x:Name="LabelLoginEmail" Content="Email Address" HorizontalAlignment="Left" Margin="30,110,0,0" VerticalAlignment="Top" Width="150" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" FontSize="15"/>
 
 
-                <TextBox x:Name="TextBoxLoginEmail" HorizontalAlignment="Center" Height="40" Margin="0,145,0,0" TextWrapping="NoWrap" Text="" VerticalAlignment="Top" Width="335" FontSize="18" VerticalContentAlignment="Center" Padding="10,0,0,0"/>
+                <TextBox x:Name="TextBoxLoginEmail" HorizontalAlignment="Center" Height="40" Margin="32,145,32,0" TextWrapping="NoWrap" Text="" VerticalAlignment="Top" Width="336" FontSize="18" VerticalContentAlignment="Center" Padding="10,0,0,0"/>
 
                 <Label x:Name="LabelLoginEmailError" Content="Email Address is required." HorizontalAlignment="Left" Margin="30,190,0,0" VerticalAlignment="Top" Width="200" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" FontSize="14" Foreground="Red" Visibility="Collapsed"/>
 
@@ -113,13 +114,7 @@
                     </Button.Style>
                 </Button>
 
-                <Label x:Name="LabelLoginFail" Content="Incorrect Email or Password" HorizontalAlignment="Center" Margin="0,0,0,110" VerticalAlignment="Bottom" Width="335" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="15" Foreground="Red" BorderBrush="Red" BorderThickness="1" Background="#ffe6e6" Visibility="Collapsed"/>
-
-                <Label x:Name="LabelServerFail" Content="Trouble Signing in. Try again later." HorizontalAlignment="Center" Margin="0,0,0,110" VerticalAlignment="Bottom" Width="335" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="15" Foreground="Red" BorderBrush="Red" BorderThickness="1" Background="#ffe6e6" Visibility="Collapsed"/>
-
-                <Label x:Name="LabelSignUpSuccess" Content="Account has been created!" HorizontalAlignment="Center" Margin="0,0,0,110" VerticalAlignment="Bottom" Width="335" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="15" Foreground="Green" BorderBrush="Green" BorderThickness="1" Background="#e6ffe6" Visibility="Collapsed"/>
-
-                <fa:ImageAwesome x:Name="LoginLoading" Icon="Refresh" Spin="True" SpinDuration="2" Height="28" Width="28" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,35" Foreground="White" Visibility="Collapsed"/>
+                <fa:ImageAwesome x:Name="LoginLoading" Icon="CircleOutlineNotch" Spin="True" SpinDuration="2" Height="30" Width="30" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,35" Foreground="White" Visibility="Collapsed"/>
 
             </Grid>
         </Border>
@@ -254,7 +249,7 @@
                     </Button.Style>
                 </Button>
 
-                <Label x:Name="LabelSignUpFail" Content="Incorrect Email or Password" HorizontalAlignment="Center" Margin="0,0,0,110" VerticalAlignment="Bottom" Width="335" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="15" Foreground="Red" BorderBrush="Red" BorderThickness="1" Background="#ffe6e6" Visibility="Collapsed"/>
+                <Label x:Name="LabelSignUpFail" Content="Could not sign up. Try again later." HorizontalAlignment="Center" Margin="0,0,0,110" VerticalAlignment="Bottom" Width="335" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="15" Foreground="Red" BorderBrush="Red" BorderThickness="1" Background="#ffe6e6" Visibility="Collapsed"/>
 
                 <fa:ImageAwesome x:Name="SignUpLoading" Icon="CircleOutlineNotch" Spin="True" SpinDuration="2" Height="30" Width="30" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,34" Foreground="White" Visibility="Collapsed"/>
 
@@ -264,7 +259,7 @@
                     <Border.Effect>
                         <DropShadowEffect Color="LightGray" />
                     </Border.Effect>
-                <Grid HorizontalAlignment="Center" Height="90" Margin="0,0,0,0" VerticalAlignment="Bottom" Width="336" Background="White">
+                    <Grid HorizontalAlignment="Center" Height="90" Margin="0,0,0,0" VerticalAlignment="Bottom" Width="336" Background="White">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
@@ -272,7 +267,7 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
-                 <TextBlock x:Name="TextBlockPasswordLength" Grid.Row="0" Text="Password must be at least 8 characters long." VerticalAlignment="Center" Margin="10,0,10,0" Foreground="Red"/>
+                        <TextBlock x:Name="TextBlockPasswordLength" Grid.Row="0" Text="Password must be at least 8 characters long." VerticalAlignment="Center" Margin="10,0,10,0" Foreground="Red"/>
 
                         <TextBlock x:Name="TextBlockPasswordCapitilize" Grid.Row="1" Text="Password must contain at least one capitalized letter." VerticalAlignment="Center" Margin="10,0,10,0" Foreground="Red"/>
 

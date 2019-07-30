@@ -19,7 +19,7 @@ namespace PasswordManager.WPF.DataAccess
 
         #region Events
 
-        public async Task<bool> UserSignUp(string email, string hashedPassword)
+        public async Task<int> UserSignUp(string email, string hashedPassword)
         {
             DataUtility.IgnoreBadCertificates();
 
@@ -31,7 +31,7 @@ namespace PasswordManager.WPF.DataAccess
             //validate
             if (request == null)
             {
-                return false;
+                return -1;
             }
 
             bool signupResult = await Task.Run(() => ReceiveSignUpHttp(request));
@@ -39,10 +39,10 @@ namespace PasswordManager.WPF.DataAccess
             //validate
             if (signupResult == false)
             {
-                return false;
+                return 0;
             }
 
-            return signupResult;
+            return 1;
         }
 
         public bool ReceiveSignUpHttp(HttpWebRequest request)
