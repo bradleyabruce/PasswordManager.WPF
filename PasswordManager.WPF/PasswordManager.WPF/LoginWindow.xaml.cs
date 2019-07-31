@@ -134,13 +134,13 @@ namespace PasswordManager.WPF
                     }
                     else if (loginResult == 0)
                     {
-                        DialogWindow dialog = new DialogWindow("Login Failed.", "Incorrect email or password.", "icon");
+                        DialogWindow dialog = new DialogWindow("Login Failed.", "Incorrect email or password.", "Error");
                         dialog.Owner = this;
                         dialog.ShowDialog();
                     }
                     else if (loginResult == -1)
                     {
-                        DialogWindow dialog = new DialogWindow("Trouble Connecting to Server.", "Try again later.", "icon");
+                        DialogWindow dialog = new DialogWindow("Could not connect.", "Try again later.", "Error");
                         dialog.Owner = this;
                         dialog.ShowDialog();
                     }
@@ -256,13 +256,11 @@ namespace PasswordManager.WPF
             {
                 LabelSignUpEmailError.Visibility = Visibility.Visible;
                 LabelSignUpPasswordError.Visibility = Visibility.Collapsed;
-                LabelSignUpFail.Visibility = Visibility.Collapsed;
             }
             else if (ValidatePassword(password, false) == false)
             {
                 LabelSignUpEmailError.Visibility = Visibility.Collapsed;
                 LabelSignUpPasswordError.Visibility = Visibility.Visible;
-                LabelSignUpFail.Visibility = Visibility.Collapsed;
             }
             else
             {
@@ -280,8 +278,10 @@ namespace PasswordManager.WPF
 
                 if (signupResult < 1)
                 {
-                    LabelSignUpFail.Visibility = Visibility.Visible;
                     BorderPasswordHint.Visibility = Visibility.Collapsed;
+                    DialogWindow dialog = new DialogWindow("Account not created.", "Unable to create account. Try again later.", "Error");
+                    dialog.Owner = this;
+                    dialog.ShowDialog();
                 }
                 else
                 {
@@ -295,7 +295,7 @@ namespace PasswordManager.WPF
                     TextBoxLoginEmail.Text = "";
                     TextBoxLoginPassword.Password = "";
 
-                    DialogWindow dialog = new DialogWindow("Success!", "You have been signed up.", "icon");
+                    DialogWindow dialog = new DialogWindow("Success!", "You have been signed up.", "Checkmark");
                     dialog.Owner = this;
                     dialog.ShowDialog();
                 }

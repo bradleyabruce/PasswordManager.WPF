@@ -249,11 +249,7 @@
                     </Button.Style>
                 </Button>
 
-                <Label x:Name="LabelSignUpFail" Content="Could not sign up. Try again later." HorizontalAlignment="Center" Margin="0,0,0,110" VerticalAlignment="Bottom" Width="335" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="15" Foreground="Red" BorderBrush="Red" BorderThickness="1" Background="#ffe6e6" Visibility="Collapsed"/>
-
                 <fa:ImageAwesome x:Name="SignUpLoading" Icon="CircleOutlineNotch" Spin="True" SpinDuration="2" Height="30" Width="30" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,34" Foreground="White" Visibility="Collapsed"/>
-
-
 
                 <Border x:Name="BorderPasswordHint" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Center" VerticalAlignment="Bottom" Height="90" Width="336" Margin="0,0,0,100" Visibility="Collapsed">
                     <Border.Effect>
@@ -276,14 +272,9 @@
                         <TextBlock x:Name="TextBlockPasswordSpecial" Grid.Row="3" Text="Password must contain at least one special character." VerticalAlignment="Center" Margin="10,0,10,0" Foreground="Red"/>
 
 
-
-
                     </Grid>
                 </Border>
-
             </Grid>
         </Border>
-
-
     </Grid>
 </Window>

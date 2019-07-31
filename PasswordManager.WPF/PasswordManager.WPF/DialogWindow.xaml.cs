@@ -24,6 +24,20 @@ namespace PasswordManager.WPF
             InitializeComponent();
             TextBoxTitle.Text = title;
             TextBoxDetails.Text = message;
+
+            switch (icon)
+            {
+                case "Error":
+                    DialogIcon.Icon = FontAwesome.WPF.FontAwesomeIcon.PlusCircle;
+                    DialogIcon.Rotation = 45;
+                    DialogIcon.Foreground = Brushes.Red;
+                    break;
+
+                case "Checkmark":
+                    DialogIcon.Icon = FontAwesome.WPF.FontAwesomeIcon.CheckCircle;
+                    DialogIcon.Foreground = Brushes.Green;
+                    break;
+            }
         }
 
         private void ButtonOK_Click(object sender, RoutedEventArgs e)
