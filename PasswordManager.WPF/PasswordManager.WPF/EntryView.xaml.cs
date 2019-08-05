@@ -31,11 +31,27 @@ namespace PasswordManager.WPF
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            string userID = App.Current.Properties["UserID"].ToString();
-            string email = App.Current.Properties["UserEmail"].ToString();
-            ButtonUser.Content =":)";
-            UserSettingsEmailLabel.Content = email;
-            UserSettingsUserNameLabel.Content = email;
+            try
+            {
+                string userID = App.Current.Properties["UserID"].ToString();
+                string email = App.Current.Properties["UserEmail"].ToString();
+                ButtonUser.Content = ":)";
+                UserSettingsEmailLabel.Content = email;
+                UserSettingsUserNameLabel.Content = email;
+            }
+            catch
+            {
+                //let user know there is an issue
+                DialogWindow dialog = new DialogWindow("Application Error", "Could not Load Application Data", "Error");
+                dialog.Owner = this;
+                dialog.ShowDialog();
+
+                //go back to sign in screen
+                LoginWindow loginWindow = new LoginWindow();
+                this.Close();
+                loginWindow.ShowDialog();
+
+            }
         }
 
         #endregion
