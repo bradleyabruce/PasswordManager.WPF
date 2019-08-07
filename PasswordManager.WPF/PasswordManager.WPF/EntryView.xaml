@@ -13,7 +13,7 @@
         d:DesignHeight="1080"
 	    d:DesignWidth="1920"
         MinHeight="600"
-        MinWidth="1200">
+        MinWidth="1000">
     <Grid x:Name="MainGrid">
         <Grid.RowDefinitions>
             <RowDefinition x:Name="RowDefinitionHeader" Height="60"/>
@@ -95,16 +95,16 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="70"/>
                     <RowDefinition Height="70"/>
-                    <RowDefinition Height="600"/>
+                    <RowDefinition Height="400"/>
                 </Grid.RowDefinitions>
 
-                <Grid x:Name="MenuCollapse" Grid.Row="0" MouseEnter="Grid_MouseEnter" MouseLeave="Grid_MouseLeave" Background="Gray">
+                <Grid x:Name="MenuCollapse" Grid.Row="0" MouseEnter="Menu_MouseEnter" MouseLeave="Menu_MouseLeave" Background="Gray" MouseDown="Menu_MouseDown">
                     <fa:ImageAwesome x:Name="IconMenuOpen" Icon="ArrowLeft"  Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" Height="30" Width="30" Margin="40,00,0,0"/>
                     <Label x:Name="LabelGridCollapse" Margin="100,0,0,0" Content="Collapse" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="20" FontWeight="Bold"/>
                 </Grid>
 
-                <Grid x:Name="MenuHome" Grid.Row="1" MouseEnter="Grid_MouseEnter" MouseLeave="Grid_MouseLeave" Background="Gray">
-                    <fa:ImageAwesome x:Name="IconMenuHome" Icon="Unlock" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" Height="30" Width="30" Margin="40,00,0,0"/>
+                <Grid x:Name="MenuHome" Grid.Row="1" MouseEnter="Menu_MouseEnter" MouseLeave="Menu_MouseLeave" Background="Gray">
+                    <fa:ImageAwesome x:Name="IconMenuHome" Icon="UnlockAlt" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" Height="30" Width="30" Margin="40,00,0,0"/>
                     <Label x:Name="LabelGridHome" Margin="100,0,0,0" Content="Passwords" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="20" FontWeight="Bold"/>
                 </Grid>
 
@@ -120,48 +120,82 @@
         </ScrollViewer>
         <!-- End Menu Grid -->
 
+        <!-- Popup user settings -->
+        <Border x:Name="BorderUserSettings" BorderBrush="#0066ff"
+            BorderThickness="1" CornerRadius="3" Height="200" Width="300" Background="White" HorizontalAlignment="Right" Margin="0,65,30,0" VerticalAlignment="Top" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Panel.ZIndex="10" Visibility="Collapsed">
+            <Border.Effect>
+                <DropShadowEffect Color="LightGray"/>
+            </Border.Effect>
+            <Grid x:Name="GridUserSettings" Background="White">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="10"/>
+                </Grid.RowDefinitions>
+
+                <Label x:Name="UserSettingsUserIcon" Grid.Column="0" Grid.Row="1" Content=":)" Margin="10,0,0,0" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+                <Label x:Name="UserSettingsUserNameLabel" Grid.Column="1" Grid.Row="1" Content="bradley bruce" Margin="10,0,0,0" FontSize="16" VerticalAlignment="Top"/>
+                <Label x:Name="UserSettingsEmailLabel" Grid.Column="1"  Grid.Row="1" Content="bruceba@mail.uc.edu" Margin="10,0,0,0" FontSize="14" VerticalAlignment="Bottom"/>
+
+                <TextBlock x:Name="UserSettingsAdvanced" Grid.Column="1" Grid.Row="3" Text="Advanced Settings" Margin="10,0,0,0" FontSize="16" VerticalAlignment="Center" Foreground="#0066ff" MouseEnter="TextButton_MouseEnter" MouseLeave="TextButton_MouseLeave"/>
+
+                <TextBlock x:Name="UserSettingsSignOut" Grid.Column="1" Grid.Row="4" Text="Sign Out" Margin="10,0,0,0" FontSize="16" VerticalAlignment="Center" Foreground="#0066ff" MouseEnter="TextButton_MouseEnter" MouseLeave="TextButton_MouseLeave" MouseDown="UserSettingsSignOut_MouseDown"/>
+            </Grid>
+        </Border>
+        <!-- End popup user settings -->
+
+
+
+
+
         <!-- Body Grid -->
-        <Grid x:Name="BodyGrid" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" Background="white" Grid.Column="1" Grid.Row="1">
+        <ScrollViewer x:Name="BodyScrollViewer" Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <Grid x:Name="BodyGrid" >
 
+                <Label x:Name="HeaderLabel" Content="Sites" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="36" FontWeight="Bold" Margin="50 10 0 0"/>
 
-            <Border Panel.ZIndex="10" x:Name="BorderUserSettings" BorderBrush="#0066ff"
-            BorderThickness="1"
-            CornerRadius="3" Height="200" Width="300" Visibility="Visible" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,2,30,0" Background="White">
-                <Border.Effect>
-                    <DropShadowEffect Color="LightGray"/>
-                </Border.Effect>
-                <Grid x:Name="GridUserSettings" Background="White">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="80"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="10"/>
-                        <RowDefinition Height="50"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="10"/>
-                    </Grid.RowDefinitions>
+                <Border x:Name="BorderButtonIconView" Height="50" Width="50" Margin="0 20 50 0" VerticalAlignment="Top" HorizontalAlignment="Right" BorderBrush="Gray"
+                    BorderThickness="1" CornerRadius="3" Background="#e6e6e6" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" ToolTip="Card View" MouseDown="ResultIconView_MouseDown">
+                    <Border.Effect>
+                        <DropShadowEffect Color="LightGray" />
+                    </Border.Effect>
+                    <fa:ImageAwesome x:Name="IconView" Foreground="Gray" Icon="ThLarge" Height="20" Width="25" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
 
-                    <Label x:Name="UserSettingsUserIcon" Grid.Column="0" Grid.Row="1" Content=":)" Margin="10,0,0,0" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    
-                    <Label x:Name="UserSettingsUserNameLabel" Grid.Column="1" Grid.Row="1" Content="bradley bruce" Margin="10,0,0,0" FontSize="16" VerticalAlignment="Top"/>
-                    <Label x:Name="UserSettingsEmailLabel" Grid.Column="1"  Grid.Row="1" Content="bruceba@mail.uc.edu" Margin="10,0,0,0" FontSize="14" VerticalAlignment="Bottom"/>
+                <Border x:Name="BorderButtonGridView" Height="50" Width="50" Margin="0 20 104 0" VerticalAlignment="Top" HorizontalAlignment="Right" BorderBrush="Gray"
+                    BorderThickness="1" CornerRadius="3" Background="#e6e6e6" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" ToolTip="List View" MouseDown="ResultGridView_MouseDown">
+                    <Border.Effect>
+                        <DropShadowEffect Color="LightGray" />
+                    </Border.Effect>
+                    <fa:ImageAwesome x:Name="GridView" Foreground="Gray" Icon="ThList" Height="20" Width="25" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
 
+                <Label x:Name="LabelSortOptions" Content="Sort By:" FontSize="18" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0 27 425 0" Foreground="Gray"/>
 
-                    <TextBlock x:Name="UserSettingsSignOut" Grid.Column="1" Grid.Row="4" Text="Sign Out" Margin="10,0,0,0" FontSize="16" VerticalAlignment="Center" Foreground="#0066ff" MouseEnter="TextButton_MouseEnter" MouseLeave="TextButton_MouseLeave" MouseDown="UserSettingsSignOut_MouseDown"/>
+                <Border x:Name="BorderDropDownSort" Height="50" Width="250" Margin="0 20 170 0" VerticalAlignment="Top" HorizontalAlignment="Right" BorderBrush="Gray"
+                    BorderThickness="1" CornerRadius="3" Background="LightGray">
+                    <Border.Effect>
+                        <DropShadowEffect Color="LightGray" />
+                    </Border.Effect>
+                    <ComboBox x:Name="ComboBoxSort" BorderThickness="0" FontSize="18" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" SelectionChanged="ComboBoxSort_SelectionChanged" />
 
-                </Grid>
-            </Border>
-            
-            
-            
-            <TextBox x:Name="TextBoxSearch" HorizontalAlignment="Left" VerticalAlignment="Top" Height="36" Margin="40,40,0,0" TextWrapping="NoWrap" Text=""  Width="1270" FontSize="24" Background="LightGray"/>
+                </Border>
 
 
 
-        </Grid>
+
+
+
+            </Grid>
+        </ScrollViewer>
 
 
         <!--BodyGrid-->

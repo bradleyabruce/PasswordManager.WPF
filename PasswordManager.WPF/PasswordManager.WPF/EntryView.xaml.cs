@@ -22,22 +22,128 @@ namespace PasswordManager.WPF
     /// </summary>
     public partial class EntryView : Window
     {
+        #region Variables
+
+        private bool _menuCollapsed;
+        public bool MenuCollapsed
+        {
+            get
+            {
+                return _menuCollapsed;
+            }
+            set
+            {
+                _menuCollapsed = value;
+                if (_menuCollapsed)
+                {
+                    GridLength gl = new GridLength(110);
+                    ColumnDefinitionMenu.Width = gl;
+                    IconMenuOpen.Icon = FontAwesome.WPF.FontAwesomeIcon.ArrowRight;
+                }
+                else
+                {
+                    GridLength gl = new GridLength(320);
+                    ColumnDefinitionMenu.Width = gl;
+                    IconMenuOpen.Icon = FontAwesome.WPF.FontAwesomeIcon.ArrowLeft;
+                }
+            }
+        }
+
+        private bool _userSettingsCollapsed;
+        public bool UserSettingsCollapsed
+        {
+            get
+            {
+                return _userSettingsCollapsed;
+            }
+            set
+            {
+                _userSettingsCollapsed = value;
+                if (_userSettingsCollapsed)
+                {
+                    BorderUserSettings.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    BorderUserSettings.Visibility = Visibility.Visible;
+                }
+            }
+        }
+
+        private string _gridSort;
+        public string GridSort
+        {
+            get { return _gridSort; }
+            set
+            {
+                _gridSort = value;
+                //TODO do sort stuff
+            }
+        }
+
+        private bool _resultsGrid;
+        public bool ResultsGrid
+        {
+            get { return _resultsGrid; }
+            set
+            {
+                _resultsGrid = value;
+                var converter = new BrushConverter();
+                if (_resultsGrid)
+                {
+                    GridView.Foreground = Brushes.White;
+                    BorderButtonGridView.Background = (Brush)converter.ConvertFrom("#0066ff");
+
+                    IconView.Foreground = Brushes.Gray;
+                    BorderButtonIconView.Background = (Brush)converter.ConvertFrom("#e6e6e6");
+
+                    //TODO add grid change
+                }
+                else
+                {
+                    IconView.Foreground = Brushes.White;
+                    BorderButtonIconView.Background = (Brush)converter.ConvertFrom("#0066ff");
+
+                    GridView.Foreground = Brushes.Gray;
+                    BorderButtonGridView.Background = (Brush)converter.ConvertFrom("#e6e6e6");
+
+                    //TODO add grid change
+                }
+            }
+        }
+
+        public string[] sortOptionsArray = { "Category A-Z", "Category Z-A", "Website A-Z", "Website Z-A", "Newest to Oldest", "Oldest to Neweset" };
+
+        public bool UserChanged = true;
+
+        #endregion Variables
+
+
+
+
         #region Constructors
 
         public EntryView()
         {
-            InitializeComponent();          
+            InitializeComponent();
+            MenuCollapsed = true;
+            UserSettingsCollapsed = true;
+            GridSort = "ASC";
+            ResultsGrid = false;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {
-                string userID = App.Current.Properties["UserID"].ToString();
-                string email = App.Current.Properties["UserEmail"].ToString();
+                string userID = "test";//App.Current.Properties["UserID"].ToString();
+                string email = "test"; //App.Current.Properties["UserEmail"].ToString();
                 ButtonUser.Content = ":)";
                 UserSettingsEmailLabel.Content = email;
                 UserSettingsUserNameLabel.Content = email;
+
+
+                SetsortOptions(sortOptionsArray);
             }
             catch
             {
@@ -74,13 +180,13 @@ namespace PasswordManager.WPF
 
         private void ButtonUser_Click(object sender, RoutedEventArgs e)
         {
-            if (BorderUserSettings.Visibility == Visibility.Collapsed)
+            if (UserSettingsCollapsed)
             {
-                BorderUserSettings.Visibility = Visibility.Visible;
+                UserSettingsCollapsed = false;
             }
             else
             {
-                BorderUserSettings.Visibility = Visibility.Collapsed;
+                UserSettingsCollapsed = true;
             }
         }
 
@@ -88,26 +194,54 @@ namespace PasswordManager.WPF
 
         #endregion
 
-        private void Grid_MouseEnter(object sender, MouseEventArgs e)
+        private void Menu_MouseEnter(object sender, MouseEventArgs e)
         {
             Grid grid = sender as Grid;
-            var converter = new BrushConverter();
-            grid.Background = (Brush)converter.ConvertFrom("#666666");
+            if (grid != null)
+            {
+                var converter = new BrushConverter();
+                grid.Background = (Brush)converter.ConvertFrom("#666666");
+            }
             this.Cursor = Cursors.Hand;
         }
 
-        private void Grid_MouseLeave(object sender, MouseEventArgs e)
+        private void Menu_MouseLeave(object sender, MouseEventArgs e)
         {
             Grid grid = sender as Grid;
-            var converter = new BrushConverter();
-            grid.Background = (Brush)converter.ConvertFrom("#808080");
+            if (grid != null)
+            {
+                var converter = new BrushConverter();
+                grid.Background = (Brush)converter.ConvertFrom("#808080");
+            }
             this.Cursor = Cursors.Arrow;
+        }
+
+        private void Menu_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Grid grid = sender as Grid;
+            string name = grid.Name;
+
+            if (name == "MenuCollapse")
+            {
+                if (MenuCollapsed)
+                {
+                    MenuCollapsed = false;
+                }
+                else
+                {
+                    MenuCollapsed = true;
+                }
+            }
+            else
+            {
+                //do nothing
+            }
         }
 
         private void TextButton_MouseEnter(object sender, MouseEventArgs e)
         {
             TextBlock textBlock = sender as TextBlock;
-            if(textBlock != null)
+            if (textBlock != null)
             {
                 textBlock.TextDecorations = TextDecorations.Underline;
                 this.Cursor = Cursors.Hand;
@@ -134,6 +268,56 @@ namespace PasswordManager.WPF
             login.ShowDialog();
             login.HorizontalAlignment = HorizontalAlignment.Center;
             login.VerticalAlignment = VerticalAlignment.Center;
+        }
+
+        private void Button_MouseEnter(object sender, MouseEventArgs e)
+        {
+            this.Cursor = Cursors.Hand;
+        }
+
+        private void Button_MouseLeave(object sender, MouseEventArgs e)
+        {
+            this.Cursor = Cursors.Arrow;
+        }
+
+        private void ButtonSort_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (GridSort == "ASC")
+            {
+                GridSort = "DESC";
+            }
+            else if (GridSort == "DESC")
+            {
+                GridSort = "ASC";
+            }
+        }
+
+        private void ResultIconView_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ResultsGrid = false;
+        }
+
+        private void ResultGridView_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ResultsGrid = true;
+        }
+
+
+        #region Methods
+
+        public void SetsortOptions(string[] array)
+        {
+            ComboBoxSort.ItemsSource = array;
+
+            ComboBoxSort.SelectedIndex = 0;
+        }
+
+
+        #endregion Methods
+
+        private void ComboBoxSort_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            GridSort = ComboBoxSort.SelectedItem.ToString();
         }
     }
 }
