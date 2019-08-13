@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:PasswordManager.WPF"
         mc:Ignorable="d"
         xmlns:fa="clr-namespace:FontAwesome.WPF;assembly=FontAwesome.WPF"
+        xmlns:usercontrols="clr-namespace:PasswordManager.WPF.UserControls"
         Title="Password Manager"
         WindowStyle="SingleBorderWindow" WindowState="Maximized" 
         ResizeMode="CanResize" 
@@ -14,191 +15,188 @@
 	    d:DesignWidth="1920"
         MinHeight="600"
         MinWidth="1000">
-    <Grid x:Name="MainGrid">
-        <Grid.RowDefinitions>
-            <RowDefinition x:Name="RowDefinitionHeader" Height="60"/>
-            <RowDefinition x:Name="RowDefinitionBody" Height="*"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition x:Name="ColumnDefinitionMenu" Width="320"/>
-            <ColumnDefinition x:Name="ColumnDefinitionBody" Width="*"/>
-        </Grid.ColumnDefinitions>
+   <Grid x:Name="MainGrid">
+      <Grid.RowDefinitions>
+         <RowDefinition x:Name="RowDefinitionHeader" Height="60"/>
+         <RowDefinition x:Name="RowDefinitionBody" Height="*"/>
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+         <ColumnDefinition x:Name="ColumnDefinitionMenu" Width="320"/>
+         <ColumnDefinition x:Name="ColumnDefinitionBody" Width="*"/>
+      </Grid.ColumnDefinitions>
 
-        <!-- Nav Grid-->
-        <Grid x:Name="NavGrid" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" Background="#4d4d4d" Grid.ColumnSpan="2">
+      <!-- Nav Grid-->
+      <Grid x:Name="NavGrid" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" Background="#4d4d4d" Grid.ColumnSpan="2">
 
-            <Button x:Name="ButtonAdd" Content="Add" HorizontalAlignment="Left" VerticalAlignment="Center" Width="135" Height="45" Margin="30,0,0,0" FontSize="18" FontWeight="Bold" Foreground="White" Background="#0066ff" BorderBrush="#3366cc">
-                <Button.Style>
-                    <Style TargetType="{x:Type Button}">
-                        <Setter Property="Background" Value="#FF1C7BCA"/>
-                        <Setter Property="Foreground" Value="White"/>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="Button">
-                                    <Border Name="border" Background="{TemplateBinding Background}" BorderThickness="1" BorderBrush="#FF5397D1" CornerRadius="3">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="Button.IsPressed" Value="True">
-                                            <Setter TargetName="border" Property="BorderBrush" Value="Transparent" />
-                                        </Trigger>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="Red"/>
-                                            <Setter Property="Cursor" Value="Hand"/>
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </Button.Style>
-            </Button>
+         <Button x:Name="ButtonAdd" Content="Add" HorizontalAlignment="Left" VerticalAlignment="Center" Width="135" Height="45" Margin="30,0,0,0" FontSize="18" FontWeight="Bold" Foreground="White" Background="#0066ff" BorderBrush="#3366cc">
+            <Button.Style>
+               <Style TargetType="{x:Type Button}">
+                  <Setter Property="Background" Value="#FF1C7BCA"/>
+                  <Setter Property="Foreground" Value="White"/>
+                  <Setter Property="Template">
+                     <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                           <Border Name="border" Background="{TemplateBinding Background}" BorderThickness="1" BorderBrush="#FF5397D1" CornerRadius="3">
+                              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                           </Border>
+                           <ControlTemplate.Triggers>
+                              <Trigger Property="Button.IsPressed" Value="True">
+                                 <Setter TargetName="border" Property="BorderBrush" Value="Transparent" />
+                              </Trigger>
+                              <Trigger Property="IsMouseOver" Value="True">
+                                 <Setter Property="Background" Value="Red"/>
+                                 <Setter Property="Cursor" Value="Hand"/>
+                              </Trigger>
+                           </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                     </Setter.Value>
+                  </Setter>
+               </Style>
+            </Button.Style>
+         </Button>
 
-            <Button x:Name="ButtonUser" Content="" HorizontalAlignment="Right" VerticalAlignment="Center" Width="60" Height="45" Margin="0,0,30,0" FontSize="18" FontWeight="Bold" Foreground="White" Background="#0066ff" BorderBrush="#3366cc" Click="ButtonUser_Click">
-                <Button.Style>
-                    <Style TargetType="{x:Type Button}">
-                        <Setter Property="Background" Value="#FF1C7BCA"/>
-                        <Setter Property="Foreground" Value="White"/>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="Button">
-                                    <Border Name="border" Background="{TemplateBinding Background}" BorderThickness="1" BorderBrush="#FF5397D1" CornerRadius="3">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="Button.IsPressed" Value="True">
-                                            <Setter TargetName="border" Property="BorderBrush" Value="Transparent" />
-                                        </Trigger>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="Red"/>
-                                            <Setter Property="Cursor" Value="Hand"/>
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </Button.Style>
-            </Button>
-
-
-
-
-
-        </Grid>
-        <!-- Header Grid -->
-
-        <!-- Menu Grid -->
-        <ScrollViewer x:Name="MenuScrollViewer" Grid.Column="0" Grid.Row="1" VerticalScrollBarVisibility="Auto" Background="Gray">
-            <Grid x:Name="MenuGrid">
-
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="70"/>
-                    <RowDefinition Height="70"/>
-                    <RowDefinition Height="400"/>
-                </Grid.RowDefinitions>
-
-                <Grid x:Name="MenuCollapse" Grid.Row="0" MouseEnter="Menu_MouseEnter" MouseLeave="Menu_MouseLeave" Background="Gray" MouseDown="Menu_MouseDown">
-                    <fa:ImageAwesome x:Name="IconMenuOpen" Icon="ArrowLeft"  Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" Height="30" Width="30" Margin="40,00,0,0"/>
-                    <Label x:Name="LabelGridCollapse" Margin="100,0,0,0" Content="Collapse" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="20" FontWeight="Bold"/>
-                </Grid>
-
-                <Grid x:Name="MenuHome" Grid.Row="1" MouseEnter="Menu_MouseEnter" MouseLeave="Menu_MouseLeave" Background="Gray">
-                    <fa:ImageAwesome x:Name="IconMenuHome" Icon="UnlockAlt" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" Height="30" Width="30" Margin="40,00,0,0"/>
-                    <Label x:Name="LabelGridHome" Margin="100,0,0,0" Content="Passwords" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="20" FontWeight="Bold"/>
-                </Grid>
-
-                <Grid x:Name="BlankArea" Grid.Row="2" Background="gray"/>
+         <Button x:Name="ButtonUser" Content="" HorizontalAlignment="Right" VerticalAlignment="Center" Width="60" Height="45" Margin="0,0,30,0" FontSize="18" FontWeight="Bold" Foreground="White" Background="#0066ff" BorderBrush="#3366cc" Click="ButtonUser_Click">
+            <Button.Style>
+               <Style TargetType="{x:Type Button}">
+                  <Setter Property="Background" Value="#FF1C7BCA"/>
+                  <Setter Property="Foreground" Value="White"/>
+                  <Setter Property="Template">
+                     <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                           <Border Name="border" Background="{TemplateBinding Background}" BorderThickness="1" BorderBrush="#FF5397D1" CornerRadius="3">
+                              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                           </Border>
+                           <ControlTemplate.Triggers>
+                              <Trigger Property="Button.IsPressed" Value="True">
+                                 <Setter TargetName="border" Property="BorderBrush" Value="Transparent" />
+                              </Trigger>
+                              <Trigger Property="IsMouseOver" Value="True">
+                                 <Setter Property="Background" Value="Red"/>
+                                 <Setter Property="Cursor" Value="Hand"/>
+                              </Trigger>
+                           </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                     </Setter.Value>
+                  </Setter>
+               </Style>
+            </Button.Style>
+         </Button>
 
 
 
 
 
+      </Grid>
+      <!-- Header Grid -->
 
+      <!-- Menu Grid -->
+      <ScrollViewer x:Name="MenuScrollViewer" Grid.Column="0" Grid.Row="1" VerticalScrollBarVisibility="Auto" Background="Gray">
+         <Grid x:Name="MenuGrid">
 
+            <Grid.RowDefinitions>
+               <RowDefinition Height="70"/>
+               <RowDefinition Height="70"/>
+               <RowDefinition Height="400"/>
+            </Grid.RowDefinitions>
+
+            <Grid x:Name="MenuCollapse" Grid.Row="0" MouseEnter="Menu_MouseEnter" MouseLeave="Menu_MouseLeave" Background="Gray" MouseDown="Menu_MouseDown">
+               <fa:ImageAwesome x:Name="IconMenuOpen" Icon="ArrowLeft"  Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" Height="30" Width="30" Margin="40,00,0,0"/>
+               <Label x:Name="LabelGridCollapse" Margin="100,0,0,0" Content="Collapse" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="20" FontWeight="Bold"/>
             </Grid>
-        </ScrollViewer>
-        <!-- End Menu Grid -->
 
-        <!-- Popup user settings -->
-        <Border x:Name="BorderUserSettings" BorderBrush="#0066ff"
+            <Grid x:Name="MenuHome" Grid.Row="1" MouseEnter="Menu_MouseEnter" MouseLeave="Menu_MouseLeave" Background="Gray">
+               <fa:ImageAwesome x:Name="IconMenuHome" Icon="UnlockAlt" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" Height="30" Width="30" Margin="40,00,0,0"/>
+               <Label x:Name="LabelGridHome" Margin="100,0,0,0" Content="Passwords" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="20" FontWeight="Bold"/>
+            </Grid>
+
+            <Grid x:Name="BlankArea" Grid.Row="2" Background="gray"/>
+
+
+
+
+
+
+
+         </Grid>
+      </ScrollViewer>
+      <!-- End Menu Grid -->
+
+      <!-- Popup user settings -->
+      <Border x:Name="BorderUserSettings" BorderBrush="#0066ff"
             BorderThickness="1" CornerRadius="3" Height="200" Width="300" Background="White" HorizontalAlignment="Right" Margin="0,65,30,0" VerticalAlignment="Top" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Panel.ZIndex="10" Visibility="Collapsed">
-            <Border.Effect>
-                <DropShadowEffect Color="LightGray"/>
-            </Border.Effect>
-            <Grid x:Name="GridUserSettings" Background="White">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="80"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="10"/>
-                    <RowDefinition Height="50"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="10"/>
-                </Grid.RowDefinitions>
+         <Border.Effect>
+            <DropShadowEffect Color="LightGray"/>
+         </Border.Effect>
+         <Grid x:Name="GridUserSettings" Background="White">
+            <Grid.ColumnDefinitions>
+               <ColumnDefinition Width="80"/>
+               <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+               <RowDefinition Height="10"/>
+               <RowDefinition Height="50"/>
+               <RowDefinition Height="*"/>
+               <RowDefinition Height="*"/>
+               <RowDefinition Height="*"/>
+               <RowDefinition Height="10"/>
+            </Grid.RowDefinitions>
 
-                <Label x:Name="UserSettingsUserIcon" Grid.Column="0" Grid.Row="1" Content=":)" Margin="10,0,0,0" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <Label x:Name="UserSettingsUserIcon" Grid.Column="0" Grid.Row="1" Content=":)" Margin="10,0,0,0" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
-                <Label x:Name="UserSettingsUserNameLabel" Grid.Column="1" Grid.Row="1" Content="bradley bruce" Margin="10,0,0,0" FontSize="16" VerticalAlignment="Top"/>
-                <Label x:Name="UserSettingsEmailLabel" Grid.Column="1"  Grid.Row="1" Content="bruceba@mail.uc.edu" Margin="10,0,0,0" FontSize="14" VerticalAlignment="Bottom"/>
+            <Label x:Name="UserSettingsUserNameLabel" Grid.Column="1" Grid.Row="1" Content="bradley bruce" Margin="10,0,0,0" FontSize="16" VerticalAlignment="Top"/>
+            <Label x:Name="UserSettingsEmailLabel" Grid.Column="1"  Grid.Row="1" Content="bruceba@mail.uc.edu" Margin="10,0,0,0" FontSize="14" VerticalAlignment="Bottom"/>
 
-                <TextBlock x:Name="UserSettingsAdvanced" Grid.Column="1" Grid.Row="3" Text="Advanced Settings" Margin="10,0,0,0" FontSize="16" VerticalAlignment="Center" Foreground="#0066ff" MouseEnter="TextButton_MouseEnter" MouseLeave="TextButton_MouseLeave"/>
+            <TextBlock x:Name="UserSettingsAdvanced" Grid.Column="1" Grid.Row="3" Text="Advanced Settings" Margin="10,0,0,0" FontSize="16" VerticalAlignment="Center" Foreground="#0066ff" MouseEnter="TextButton_MouseEnter" MouseLeave="TextButton_MouseLeave"/>
 
-                <TextBlock x:Name="UserSettingsSignOut" Grid.Column="1" Grid.Row="4" Text="Sign Out" Margin="10,0,0,0" FontSize="16" VerticalAlignment="Center" Foreground="#0066ff" MouseEnter="TextButton_MouseEnter" MouseLeave="TextButton_MouseLeave" MouseDown="UserSettingsSignOut_MouseDown"/>
-            </Grid>
-        </Border>
-        <!-- End popup user settings -->
-
-
+            <TextBlock x:Name="UserSettingsSignOut" Grid.Column="1" Grid.Row="4" Text="Sign Out" Margin="10,0,0,0" FontSize="16" VerticalAlignment="Center" Foreground="#0066ff" MouseEnter="TextButton_MouseEnter" MouseLeave="TextButton_MouseLeave" MouseDown="UserSettingsSignOut_MouseDown"/>
+         </Grid>
+      </Border>
+      <!-- End popup user settings -->
 
 
 
-        <!-- Body Grid -->
-        <ScrollViewer x:Name="BodyScrollViewer" Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Auto">
-            <Grid x:Name="BodyGrid" >
 
-                <Label x:Name="HeaderLabel" Content="Sites" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="36" FontWeight="Bold" Margin="50 10 0 0"/>
 
-                <Border x:Name="BorderButtonIconView" Height="50" Width="50" Margin="0 20 50 0" VerticalAlignment="Top" HorizontalAlignment="Right" BorderBrush="Gray"
+      <!-- Body Grid -->
+      <ScrollViewer x:Name="BodyScrollViewer" Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Auto">
+         <Grid x:Name="BodyGrid">
+
+            <Label x:Name="HeaderLabel" Content="Sites" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="36" FontWeight="Bold" Margin="50 10 0 0"/>
+
+            <Border x:Name="BorderButtonIconView" Height="50" Width="50" Margin="0 20 50 0" VerticalAlignment="Top" HorizontalAlignment="Right" BorderBrush="Gray"
                     BorderThickness="1" CornerRadius="3" Background="#e6e6e6" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" ToolTip="Card View" MouseDown="ResultIconView_MouseDown">
-                    <Border.Effect>
-                        <DropShadowEffect Color="LightGray" />
-                    </Border.Effect>
-                    <fa:ImageAwesome x:Name="IconView" Foreground="Gray" Icon="ThLarge" Height="20" Width="25" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                </Border>
+               <Border.Effect>
+                  <DropShadowEffect Color="LightGray" />
+               </Border.Effect>
+               <fa:ImageAwesome x:Name="IconView" Foreground="Gray" Icon="ThLarge" Height="20" Width="25" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
 
-                <Border x:Name="BorderButtonGridView" Height="50" Width="50" Margin="0 20 104 0" VerticalAlignment="Top" HorizontalAlignment="Right" BorderBrush="Gray"
+            <Border x:Name="BorderButtonGridView" Height="50" Width="50" Margin="0 20 104 0" VerticalAlignment="Top" HorizontalAlignment="Right" BorderBrush="Gray"
                     BorderThickness="1" CornerRadius="3" Background="#e6e6e6" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" ToolTip="List View" MouseDown="ResultGridView_MouseDown">
-                    <Border.Effect>
-                        <DropShadowEffect Color="LightGray" />
-                    </Border.Effect>
-                    <fa:ImageAwesome x:Name="GridView" Foreground="Gray" Icon="ThList" Height="20" Width="25" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                </Border>
+               <Border.Effect>
+                  <DropShadowEffect Color="LightGray" />
+               </Border.Effect>
+               <fa:ImageAwesome x:Name="GridView" Foreground="Gray" Icon="ThList" Height="20" Width="25" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
 
-                <Label x:Name="LabelSortOptions" Content="Sort By:" FontSize="18" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0 27 425 0" Foreground="Gray"/>
+            <Label x:Name="LabelSortOptions" Content="Sort By:" FontSize="18" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0 27 425 0" Foreground="Gray"/>
 
-                <Border x:Name="BorderDropDownSort" Height="50" Width="250" Margin="0 20 170 0" VerticalAlignment="Top" HorizontalAlignment="Right" BorderBrush="Gray"
+            <Border x:Name="BorderDropDownSort" Height="50" Width="250" Margin="0 20 170 0" VerticalAlignment="Top" HorizontalAlignment="Right" BorderBrush="Gray"
                     BorderThickness="1" CornerRadius="3" Background="LightGray">
-                    <Border.Effect>
-                        <DropShadowEffect Color="LightGray" />
-                    </Border.Effect>
-                    <ComboBox x:Name="ComboBoxSort" BorderThickness="0" FontSize="18" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" SelectionChanged="ComboBoxSort_SelectionChanged" />
+               <Border.Effect>
+                  <DropShadowEffect Color="LightGray" />
+               </Border.Effect>
+               <ComboBox x:Name="ComboBoxSort" BorderThickness="0" FontSize="18" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" SelectionChanged="ComboBoxSort_SelectionChanged" />
 
-                </Border>
-
-
+            </Border>
 
 
 
+         </Grid>
+      </ScrollViewer>
 
-            </Grid>
-        </ScrollViewer>
 
-
-        <!--BodyGrid-->
+      <!--BodyGrid-->
 
 
 
@@ -209,5 +207,5 @@
 
 
 
-    </Grid>
+   </Grid>
 </Window>

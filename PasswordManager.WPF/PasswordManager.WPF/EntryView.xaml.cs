@@ -14,310 +14,366 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using PasswordManager.WPF;
 using PasswordManager.WPF.DataAccess;
+using PasswordManager.WPF.DataObjects;
+using PasswordManager.WPF.UserControls;
 
 namespace PasswordManager.WPF
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class EntryView : Window
-    {
-        #region Variables
+   /// <summary>
+   /// Interaction logic for MainWindow.xaml
+   /// </summary>
+   public partial class EntryView : Window
+   {
+      #region Variables
 
-        private bool _menuCollapsed;
-        public bool MenuCollapsed
-        {
-            get
+      DataPasswordRetrieval passwordRetrieval = new DataPasswordRetrieval();
+
+      private bool _menuCollapsed;
+      public bool MenuCollapsed
+      {
+         get
+         {
+            return _menuCollapsed;
+         }
+         set
+         {
+            _menuCollapsed = value;
+            if (_menuCollapsed)
             {
-                return _menuCollapsed;
+               GridLength gl = new GridLength(110);
+               ColumnDefinitionMenu.Width = gl;
+               IconMenuOpen.Icon = FontAwesome.WPF.FontAwesomeIcon.ArrowRight;
             }
-            set
+            else
             {
-                _menuCollapsed = value;
-                if (_menuCollapsed)
-                {
-                    GridLength gl = new GridLength(110);
-                    ColumnDefinitionMenu.Width = gl;
-                    IconMenuOpen.Icon = FontAwesome.WPF.FontAwesomeIcon.ArrowRight;
-                }
-                else
-                {
-                    GridLength gl = new GridLength(320);
-                    ColumnDefinitionMenu.Width = gl;
-                    IconMenuOpen.Icon = FontAwesome.WPF.FontAwesomeIcon.ArrowLeft;
-                }
+               GridLength gl = new GridLength(320);
+               ColumnDefinitionMenu.Width = gl;
+               IconMenuOpen.Icon = FontAwesome.WPF.FontAwesomeIcon.ArrowLeft;
             }
-        }
+         }
+      }
 
-        private bool _userSettingsCollapsed;
-        public bool UserSettingsCollapsed
-        {
-            get
+      private bool _userSettingsCollapsed;
+      public bool UserSettingsCollapsed
+      {
+         get
+         {
+            return _userSettingsCollapsed;
+         }
+         set
+         {
+            _userSettingsCollapsed = value;
+            if (_userSettingsCollapsed)
             {
-                return _userSettingsCollapsed;
+               BorderUserSettings.Visibility = Visibility.Collapsed;
             }
-            set
+            else
             {
-                _userSettingsCollapsed = value;
-                if (_userSettingsCollapsed)
-                {
-                    BorderUserSettings.Visibility = Visibility.Collapsed;
-                }
-                else
-                {
-                    BorderUserSettings.Visibility = Visibility.Visible;
-                }
+               BorderUserSettings.Visibility = Visibility.Visible;
             }
-        }
+         }
+      }
 
-        private string _gridSort;
-        public string GridSort
-        {
-            get { return _gridSort; }
-            set
+      private string _gridSort;
+      public string GridSort
+      {
+         get { return _gridSort; }
+         set
+         {
+            _gridSort = value;
+            //TODO do sort stuff
+         }
+      }
+
+      private bool _resultsGrid;
+      public bool ResultsGrid
+      {
+         get { return _resultsGrid; }
+         set
+         {
+            _resultsGrid = value;
+            var converter = new BrushConverter();
+            if (_resultsGrid)
             {
-                _gridSort = value;
-                //TODO do sort stuff
-            }
-        }
+               GridView.Foreground = Brushes.White;
+               BorderButtonGridView.Background = (Brush)converter.ConvertFrom("#0066ff");
 
-        private bool _resultsGrid;
-        public bool ResultsGrid
-        {
-            get { return _resultsGrid; }
-            set
+               IconView.Foreground = Brushes.Gray;
+               BorderButtonIconView.Background = (Brush)converter.ConvertFrom("#e6e6e6");
+
+               //TODO add grid change
+            }
+            else
             {
-                _resultsGrid = value;
-                var converter = new BrushConverter();
-                if (_resultsGrid)
-                {
-                    GridView.Foreground = Brushes.White;
-                    BorderButtonGridView.Background = (Brush)converter.ConvertFrom("#0066ff");
+               IconView.Foreground = Brushes.White;
+               BorderButtonIconView.Background = (Brush)converter.ConvertFrom("#0066ff");
 
-                    IconView.Foreground = Brushes.Gray;
-                    BorderButtonIconView.Background = (Brush)converter.ConvertFrom("#e6e6e6");
+               GridView.Foreground = Brushes.Gray;
+               BorderButtonGridView.Background = (Brush)converter.ConvertFrom("#e6e6e6");
 
-                    //TODO add grid change
-                }
-                else
-                {
-                    IconView.Foreground = Brushes.White;
-                    BorderButtonIconView.Background = (Brush)converter.ConvertFrom("#0066ff");
-
-                    GridView.Foreground = Brushes.Gray;
-                    BorderButtonGridView.Background = (Brush)converter.ConvertFrom("#e6e6e6");
-
-                    //TODO add grid change
-                }
+               //TODO add grid change
             }
-        }
+         }
+      }
 
-        public string[] sortOptionsArray = { "Category A-Z", "Category Z-A", "Website A-Z", "Website Z-A", "Newest to Oldest", "Oldest to Neweset" };
+      private List<PasswordEntryObject> _passwordEntries;
+      public List<PasswordEntryObject> PasswordEntries
+      {
+         get { return _passwordEntries; }
+         set
+         {
+            _passwordEntries = value;
+            if (_passwordEntries == null)
+            {
+               ErrorAndReturnToLogin("Application Error", "Could not retrieve passwords from server", "Error");
+            }
+            else
+            {
+               if (_passwordEntries.Count < 1)
+               {
+                  //if there are no passwords for user
+               }
+               else
+               {
+                  int startingHeight = 100;
 
-        public bool UserChanged = true;
+                  foreach (PasswordEntryObject password in _passwordEntries)
+                  {
+                     PasswordCard card = new PasswordCard(password.EntryID, password.WebsiteDomain, password.WebsiteUsername, password.WebsitePassword, password.CategoryID); ;
+                     Thickness thickness = new Thickness(0, startingHeight, 0, 50);
+                     card.Margin = thickness;
+                     card.VerticalAlignment = VerticalAlignment.Top;
+                     card.HorizontalAlignment = HorizontalAlignment.Stretch;
+                     BodyGrid.Children.Add(card);
+                     startingHeight += 250;
+                  }
+               }
+            }
+         }
+      }
 
-        #endregion Variables
+      public string[] sortOptionsArray = { "Category A-Z", "Category Z-A", "Website A-Z", "Website Z-A", "Newest to Oldest", "Oldest to Neweset" };
+
+      public bool UserChanged = true;
+
+      #endregion Variables
 
 
+      #region Constructors
 
+      public EntryView()
+      {
+         InitializeComponent();
+         MenuCollapsed = true;
+         UserSettingsCollapsed = true;
+         GridSort = "ASC";
+         ResultsGrid = false;
+      }
 
-        #region Constructors
+      private void Window_Loaded(object sender, RoutedEventArgs e)
+      {
+         try
+         {
+            //set data
+            string userID = App.Current.Properties["UserID"].ToString();
+            string email = App.Current.Properties["UserEmail"].ToString();
+            ButtonUser.Content = ":)";
+            UserSettingsEmailLabel.Content = email;
+            UserSettingsUserNameLabel.Content = email;
 
-        public EntryView()
-        {
-            InitializeComponent();
-            MenuCollapsed = true;
+            //get data
+            SetsortOptions(sortOptionsArray);
+            getEntriesAsync(userID, "0");
+         }
+         catch
+         {
+            ErrorAndReturnToLogin("Application Error", "Could not load application data", "Error");
+         }
+      }
+
+      #endregion
+
+      #region Nav Events
+
+      private void ButtonUserMenu_MouseEnter(object sender, MouseEventArgs e)
+      {
+         var converter = new BrushConverter();
+         //textboxUserName.Background = (Brush)converter.ConvertFrom("#BEE6FD");
+      }
+
+      private void ButtonUserMenu_MouseLeave(object sender, MouseEventArgs e)
+      {
+         var converter = new BrushConverter();
+         //textboxUserName.Background = Brushes.LightBlue;
+      }
+
+      #endregion
+
+      private void ButtonUser_Click(object sender, RoutedEventArgs e)
+      {
+         if (UserSettingsCollapsed)
+         {
+            UserSettingsCollapsed = false;
+         }
+         else
+         {
             UserSettingsCollapsed = true;
+         }
+      }
+
+      #region Menu Events
+
+      #endregion
+
+      private void Menu_MouseEnter(object sender, MouseEventArgs e)
+      {
+         Grid grid = sender as Grid;
+         if (grid != null)
+         {
+            var converter = new BrushConverter();
+            grid.Background = (Brush)converter.ConvertFrom("#666666");
+         }
+         this.Cursor = Cursors.Hand;
+      }
+
+      private void Menu_MouseLeave(object sender, MouseEventArgs e)
+      {
+         Grid grid = sender as Grid;
+         if (grid != null)
+         {
+            var converter = new BrushConverter();
+            grid.Background = (Brush)converter.ConvertFrom("#808080");
+         }
+         this.Cursor = Cursors.Arrow;
+      }
+
+      private void Menu_MouseDown(object sender, MouseButtonEventArgs e)
+      {
+         Grid grid = sender as Grid;
+         string name = grid.Name;
+
+         if (name == "MenuCollapse")
+         {
+            if (MenuCollapsed)
+            {
+               MenuCollapsed = false;
+            }
+            else
+            {
+               MenuCollapsed = true;
+            }
+         }
+         else
+         {
+            //do nothing
+         }
+      }
+
+      private void TextButton_MouseEnter(object sender, MouseEventArgs e)
+      {
+         TextBlock textBlock = sender as TextBlock;
+         if (textBlock != null)
+         {
+            textBlock.TextDecorations = TextDecorations.Underline;
+            this.Cursor = Cursors.Hand;
+         }
+      }
+
+      private void TextButton_MouseLeave(object sender, MouseEventArgs e)
+      {
+         TextBlock textBlock = sender as TextBlock;
+         if (textBlock != null)
+         {
+            textBlock.TextDecorations = null; ;
+            this.Cursor = Cursors.Arrow;
+         }
+      }
+
+      private void UserSettingsSignOut_MouseDown(object sender, MouseButtonEventArgs e)
+      {
+         App.Current.Properties["UserID"] = null;
+         App.Current.Properties["UserEmail"] = null;
+
+         LoginWindow login = new LoginWindow();
+         this.Close();
+         login.ShowDialog();
+         login.HorizontalAlignment = HorizontalAlignment.Center;
+         login.VerticalAlignment = VerticalAlignment.Center;
+      }
+
+      private void Button_MouseEnter(object sender, MouseEventArgs e)
+      {
+         this.Cursor = Cursors.Hand;
+      }
+
+      private void Button_MouseLeave(object sender, MouseEventArgs e)
+      {
+         this.Cursor = Cursors.Arrow;
+      }
+
+      private void ButtonSort_MouseDown(object sender, MouseButtonEventArgs e)
+      {
+         if (GridSort == "ASC")
+         {
+            GridSort = "DESC";
+         }
+         else if (GridSort == "DESC")
+         {
             GridSort = "ASC";
-            ResultsGrid = false;
-        }
+         }
+      }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                string userID = App.Current.Properties["UserID"].ToString();
-                string email = App.Current.Properties["UserEmail"].ToString();
-                ButtonUser.Content = ":)";
-                UserSettingsEmailLabel.Content = email;
-                UserSettingsUserNameLabel.Content = email;
+      private void ResultIconView_MouseDown(object sender, MouseButtonEventArgs e)
+      {
+         ResultsGrid = false;
+      }
 
-
-                SetsortOptions(sortOptionsArray);
-            }
-            catch
-            {
-                //let user know there is an issue
-                DialogWindow dialog = new DialogWindow("Application Error", "Could not Load Application Data", "Error");
-                dialog.Owner = this;
-                dialog.ShowDialog();
-
-                //go back to sign in screen
-                LoginWindow loginWindow = new LoginWindow();
-                this.Close();
-                loginWindow.ShowDialog();
-
-            }
-        }
-
-        #endregion
-
-        #region Nav Events
-
-        private void ButtonUserMenu_MouseEnter(object sender, MouseEventArgs e)
-        {
-            var converter = new BrushConverter();
-            //textboxUserName.Background = (Brush)converter.ConvertFrom("#BEE6FD");
-        }
-
-        private void ButtonUserMenu_MouseLeave(object sender, MouseEventArgs e)
-        {
-            var converter = new BrushConverter();
-            //textboxUserName.Background = Brushes.LightBlue;
-        }
-
-        #endregion
-
-        private void ButtonUser_Click(object sender, RoutedEventArgs e)
-        {
-            if (UserSettingsCollapsed)
-            {
-                UserSettingsCollapsed = false;
-            }
-            else
-            {
-                UserSettingsCollapsed = true;
-            }
-        }
-
-        #region Menu Events
-
-        #endregion
-
-        private void Menu_MouseEnter(object sender, MouseEventArgs e)
-        {
-            Grid grid = sender as Grid;
-            if (grid != null)
-            {
-                var converter = new BrushConverter();
-                grid.Background = (Brush)converter.ConvertFrom("#666666");
-            }
-            this.Cursor = Cursors.Hand;
-        }
-
-        private void Menu_MouseLeave(object sender, MouseEventArgs e)
-        {
-            Grid grid = sender as Grid;
-            if (grid != null)
-            {
-                var converter = new BrushConverter();
-                grid.Background = (Brush)converter.ConvertFrom("#808080");
-            }
-            this.Cursor = Cursors.Arrow;
-        }
-
-        private void Menu_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            Grid grid = sender as Grid;
-            string name = grid.Name;
-
-            if (name == "MenuCollapse")
-            {
-                if (MenuCollapsed)
-                {
-                    MenuCollapsed = false;
-                }
-                else
-                {
-                    MenuCollapsed = true;
-                }
-            }
-            else
-            {
-                //do nothing
-            }
-        }
-
-        private void TextButton_MouseEnter(object sender, MouseEventArgs e)
-        {
-            TextBlock textBlock = sender as TextBlock;
-            if (textBlock != null)
-            {
-                textBlock.TextDecorations = TextDecorations.Underline;
-                this.Cursor = Cursors.Hand;
-            }
-        }
-
-        private void TextButton_MouseLeave(object sender, MouseEventArgs e)
-        {
-            TextBlock textBlock = sender as TextBlock;
-            if (textBlock != null)
-            {
-                textBlock.TextDecorations = null; ;
-                this.Cursor = Cursors.Arrow;
-            }
-        }
-
-        private void UserSettingsSignOut_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            App.Current.Properties["UserID"] = null;
-            App.Current.Properties["UserEmail"] = null;
-
-            LoginWindow login = new LoginWindow();
-            this.Close();
-            login.ShowDialog();
-            login.HorizontalAlignment = HorizontalAlignment.Center;
-            login.VerticalAlignment = VerticalAlignment.Center;
-        }
-
-        private void Button_MouseEnter(object sender, MouseEventArgs e)
-        {
-            this.Cursor = Cursors.Hand;
-        }
-
-        private void Button_MouseLeave(object sender, MouseEventArgs e)
-        {
-            this.Cursor = Cursors.Arrow;
-        }
-
-        private void ButtonSort_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (GridSort == "ASC")
-            {
-                GridSort = "DESC";
-            }
-            else if (GridSort == "DESC")
-            {
-                GridSort = "ASC";
-            }
-        }
-
-        private void ResultIconView_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            ResultsGrid = false;
-        }
-
-        private void ResultGridView_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            ResultsGrid = true;
-        }
+      private void ResultGridView_MouseDown(object sender, MouseButtonEventArgs e)
+      {
+         ResultsGrid = true;
+      }
 
 
-        #region Methods
+      #region Methods
 
-        public void SetsortOptions(string[] array)
-        {
-            ComboBoxSort.ItemsSource = array;
+      public void SetsortOptions(string[] array)
+      {
+         ComboBoxSort.ItemsSource = array;
 
-            ComboBoxSort.SelectedIndex = 0;
-        }
+         ComboBoxSort.SelectedIndex = 0;
+      }
 
 
-        #endregion Methods
+      #endregion Methods
 
-        private void ComboBoxSort_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            GridSort = ComboBoxSort.SelectedItem.ToString();
-        }
-    }
+      private void ComboBoxSort_SelectionChanged(object sender, SelectionChangedEventArgs e)
+      {
+         GridSort = ComboBoxSort.SelectedItem.ToString();
+      }
+
+      public async void getEntriesAsync(string UserID, string CategoryID)
+      {
+         Task<List<PasswordEntryObject>> passwordRetreivalAsync = passwordRetrieval.RetreivePasswords(UserID, CategoryID);
+         //LoginLoading.Visibility = Visibility.Visible;
+         //ButtonLogin.Content = "";
+
+         PasswordEntries = await passwordRetreivalAsync;
+
+         //LoginLoading.Visibility = Visibility.Collapsed;
+      }
+
+      public void ErrorAndReturnToLogin(string errorTitle, string errorMessage, string errorIcon)
+      {
+         //let user know there is an issue
+         DialogWindow dialog = new DialogWindow(errorTitle, errorMessage, errorIcon);
+         dialog.Owner = this;
+         dialog.ShowDialog();
+
+         //go back to sign in screen
+         LoginWindow loginWindow = new LoginWindow();
+         this.Close();
+         loginWindow.ShowDialog();
+      }
+
+   }
 }
