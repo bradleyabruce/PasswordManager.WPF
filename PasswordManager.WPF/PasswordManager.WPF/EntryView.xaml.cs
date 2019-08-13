@@ -136,8 +136,8 @@ namespace PasswordManager.WPF
         {
             try
             {
-                string userID = "test";//App.Current.Properties["UserID"].ToString();
-                string email = "test"; //App.Current.Properties["UserEmail"].ToString();
+                string userID = App.Current.Properties["UserID"].ToString();
+                string email = App.Current.Properties["UserEmail"].ToString();
                 ButtonUser.Content = ":)";
                 UserSettingsEmailLabel.Content = email;
                 UserSettingsUserNameLabel.Content = email;
