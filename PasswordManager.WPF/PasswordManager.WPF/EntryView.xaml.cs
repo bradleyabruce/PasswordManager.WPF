@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -123,36 +124,12 @@ namespace PasswordManager.WPF
          set
          {
             _passwordEntries = value;
-            if (_passwordEntries == null)
-            {
-               ErrorAndReturnToLogin("Application Error", "Could not retrieve passwords from server", "Error");
-            }
-            else
-            {
-               if (_passwordEntries.Count < 1)
-               {
-                  //if there are no passwords for user
-               }
-               else
-               {
-                  int startingHeight = 100;
-
-                  foreach (PasswordEntryObject password in _passwordEntries)
-                  {
-                     PasswordCard card = new PasswordCard(password.EntryID, password.WebsiteDomain, password.WebsiteUsername, password.WebsitePassword, password.CategoryID); ;
-                     Thickness thickness = new Thickness(0, startingHeight, 0, 50);
-                     card.Margin = thickness;
-                     card.VerticalAlignment = VerticalAlignment.Top;
-                     card.HorizontalAlignment = HorizontalAlignment.Stretch;
-                     BodyGrid.Children.Add(card);
-                     startingHeight += 250;
-                  }
-               }
-            }
+            ShowPasswords();
          }
       }
 
-      public string[] sortOptionsArray = { "Category A-Z", "Category Z-A", "Website A-Z", "Website Z-A", "Newest to Oldest", "Oldest to Neweset" };
+
+public string[] sortOptionsArray = { "Category A-Z", "Category Z-A", "Website A-Z", "Website Z-A", "Newest to Oldest", "Oldest to Neweset" };
 
       public bool UserChanged = true;
 
@@ -184,12 +161,46 @@ namespace PasswordManager.WPF
             //get data
             SetsortOptions(sortOptionsArray);
             getEntriesAsync(userID, "0");
+
+
          }
          catch
          {
             ErrorAndReturnToLogin("Application Error", "Could not load application data", "Error");
          }
       }
+
+      public void ShowPasswords()
+      {
+         if (PasswordEntries == null)
+         {
+            ErrorAndReturnToLogin("Application Error", "Could not retrieve passwords from server", "Error");
+         }
+         else
+         {
+            if (PasswordEntries.Count < 1)
+            {
+               //if there are no passwords for user
+            }
+            else
+            {
+               int startingHeight = 200;
+
+               foreach (PasswordEntryObject password in _passwordEntries)
+               {
+
+                  PasswordRow row = new PasswordRow(password);
+                  Thickness thickness = new Thickness(0, startingHeight, 0, 50);
+                  row.Margin = thickness;
+                  row.VerticalAlignment = VerticalAlignment.Top;
+                  row.HorizontalAlignment = HorizontalAlignment.Stretch;
+                  BodyGrid.Children.Add(row);
+                  startingHeight += 51;
+               }
+            }
+         }
+      }
+
 
       #endregion
 

@@ -17,13 +17,14 @@ namespace PasswordManager.WPF.DataAccess
       DataUtility du = new DataUtility();
 
 
-      public async Task<BitmapImage> GetImage(string domain)
+      public async Task<BitmapImage> GetImage(string domain, double size)
       {
          try
          {
-
-            string url = "https://logo.clearbit.com/" + domain + "?size=200&format=png";
-            Uri uri = du.CreateURI(url);
+            string url = "https://logo.clearbit.com/" + domain + "?size=" + size + "&format=png";
+            Uri uri = new Uri(url);
+            var builder = new UriBuilder(uri);
+            uri = builder.Uri;
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
             request.Method = "GET";
@@ -48,6 +49,7 @@ namespace PasswordManager.WPF.DataAccess
             bitmapimage.StreamSource = memory;
             bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
             bitmapimage.EndInit();
+            bitmapimage.Freeze();
 
             return bitmapimage;
          }

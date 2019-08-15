@@ -33,29 +33,29 @@ namespace PasswordManager.WPF.UserControls
       #endregion Variables
 
 
-      public async PasswordCard(string entryid, string domain, string username, string password, string category)
+      public PasswordCard(string entryid, string domain, string username, string password, string category)
       {
          InitializeComponent();
          Domain = domain;
 
-         Task<BitmapImage> imageasync = dgl.GetImage(domain);
+         //Task<BitmapImage> imageasync = dgl.GetImage(domain);
 
          //loading
 
-         BitmapImage image = await imageasync;
-         if (image != null)
-         {
-            ImageBox.Visibility = Visibility.Visible;
-            IconBox.Visibility = Visibility.Collapsed;
-            ImageBox.Source = image;
-         }
-         else
-         {
+         //BitmapImage image = await imageasync;
+         //if (image != null)
+         //{
+         //   ImageBox.Visibility = Visibility.Visible;
+         //   IconBox.Visibility = Visibility.Collapsed;
+         //   ImageBox.Source = image;
+         //}
+         //else
+         //{
             //otherwise set default icon
             ImageBox.Visibility = Visibility.Collapsed;
             IconBox.Visibility = Visibility.Visible;
             IconBox.Icon = FontAwesome.WPF.FontAwesomeIcon.Key;
-         }
+         //}
       }
 
       private void Border_MouseEnter(object sender, MouseEventArgs e)
