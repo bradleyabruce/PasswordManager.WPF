@@ -63,7 +63,7 @@ namespace PasswordManager.WPF.DataAccess
             }
 
          }
-         catch (Exception Ex)
+         catch
          {
             return null;
          }

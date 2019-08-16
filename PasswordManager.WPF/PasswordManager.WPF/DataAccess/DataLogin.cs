@@ -85,7 +85,7 @@ namespace PasswordManager.WPF.DataAccess
                 loginObjects[0].Result = true;
                 return loginObjects[0];
             }
-            catch (Exception Ex)
+            catch
             {
                 LoginObject errorObject = new LoginObject();
                 errorObject.Result = false;

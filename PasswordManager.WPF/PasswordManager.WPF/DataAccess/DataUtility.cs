@@ -29,7 +29,7 @@ namespace PasswordManager.WPF.DataAccess
                 }
                 return request;
             }
-            catch (Exception e)
+            catch
             {
                 return null;
             }

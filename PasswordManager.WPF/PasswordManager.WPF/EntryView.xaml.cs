@@ -124,12 +124,12 @@ namespace PasswordManager.WPF
          set
          {
             _passwordEntries = value;
-            ShowPasswords();
+            ShowPasswordGrid();
          }
       }
 
 
-public string[] sortOptionsArray = { "Category A-Z", "Category Z-A", "Website A-Z", "Website Z-A", "Newest to Oldest", "Oldest to Neweset" };
+      public string[] sortOptionsArray = { "Category A-Z", "Category Z-A", "Website A-Z", "Website Z-A", "Newest to Oldest", "Oldest to Neweset" };
 
       public bool UserChanged = true;
 
@@ -170,7 +170,7 @@ public string[] sortOptionsArray = { "Category A-Z", "Category Z-A", "Website A-
          }
       }
 
-      public void ShowPasswords()
+      public void ShowPasswordGrid()
       {
          if (PasswordEntries == null)
          {
@@ -184,19 +184,54 @@ public string[] sortOptionsArray = { "Category A-Z", "Category Z-A", "Website A-
             }
             else
             {
-               int startingHeight = 200;
+               int startingHeight = 100;
+               List<PasswordRowContainer> ContainerList = new List<PasswordRowContainer>();
+               List<string> categories = new List<string>();
 
+               //get categories
                foreach (PasswordEntryObject password in _passwordEntries)
                {
-
-                  PasswordRow row = new PasswordRow(password);
-                  Thickness thickness = new Thickness(0, startingHeight, 0, 50);
-                  row.Margin = thickness;
-                  row.VerticalAlignment = VerticalAlignment.Top;
-                  row.HorizontalAlignment = HorizontalAlignment.Stretch;
-                  BodyGrid.Children.Add(row);
-                  startingHeight += 51;
+                  if (!categories.Contains(password.CategoryID))
+                  {
+                     categories.Add(password.CategoryID);
+                  }
                }
+               //add passwords to categories
+               foreach (string s in categories)
+               {
+                  PasswordRowContainer container = new PasswordRowContainer(s);
+                  List<PasswordEntryObject> passwords = new List<PasswordEntryObject>();
+
+                  foreach(PasswordEntryObject password in _passwordEntries)
+                  {
+                     if(password.CategoryID == s)
+                     {
+                        passwords.Add(password);
+                     }
+                  }
+
+                  container.Passwords = passwords;
+                  ContainerList.Add(container);
+               }
+
+               //show categories
+               foreach(PasswordRowContainer container in ContainerList)
+               {
+                  Thickness thickness = new Thickness(0, startingHeight, 0, 50);
+                  container.Margin = thickness;
+                  container.VerticalAlignment = VerticalAlignment.Top;
+                  container.HorizontalAlignment = HorizontalAlignment.Center;
+                  BodyGrid.Children.Add(container);
+               }
+               /*
+               
+               row.Margin = thickness;
+               row.VerticalAlignment = VerticalAlignment.Top;
+               row.HorizontalAlignment = HorizontalAlignment.Stretch;
+               BodyGrid.Children.Add(row);
+               startingHeight += 51;
+               */
+
             }
          }
       }
