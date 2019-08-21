@@ -178,14 +178,14 @@ namespace PasswordManager.WPF
          }
          else
          {
+            
             if (PasswordEntries.Count < 1)
             {
                //if there are no passwords for user
             }
             else
             {
-               int startingHeight = 100;
-               List<PasswordRowContainer> ContainerList = new List<PasswordRowContainer>();
+               PasswordList.Children.Clear();
                List<string> categories = new List<string>();
 
                //get categories
@@ -196,10 +196,23 @@ namespace PasswordManager.WPF
                      categories.Add(password.CategoryID);
                   }
                }
+
+               int height = 30;
+
+               foreach(string s in categories)
+               {
+                  Thickness margin = new Thickness(10, height, 10, 10);
+                  DataGrid grid = new DataGrid();
+                  grid.Margin = margin;
+                  PasswordList.Children.Add(grid);
+                  height += 50;
+               }
+
+
+               /*
                //add passwords to categories
                foreach (string s in categories)
                {
-                  PasswordRowContainer container = new PasswordRowContainer(s);
                   List<PasswordEntryObject> passwords = new List<PasswordEntryObject>();
 
                   foreach(PasswordEntryObject password in _passwordEntries)
@@ -223,16 +236,12 @@ namespace PasswordManager.WPF
                   container.HorizontalAlignment = HorizontalAlignment.Center;
                   BodyGrid.Children.Add(container);
                }
-               /*
-               
-               row.Margin = thickness;
-               row.VerticalAlignment = VerticalAlignment.Top;
-               row.HorizontalAlignment = HorizontalAlignment.Stretch;
-               BodyGrid.Children.Add(row);
-               startingHeight += 51;
                */
 
+
+
             }
+
          }
       }
 

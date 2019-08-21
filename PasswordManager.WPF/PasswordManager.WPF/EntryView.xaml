@@ -157,12 +157,17 @@
 
 
 
-      <!-- Body Grid -->
-      <ScrollViewer x:Name="BodyScrollViewer" Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Auto">
-         <Grid x:Name="BodyGrid">
+      <!-- Password Grid -->
+      <Grid x:Name="PasswordGrid" Grid.Column="1" Grid.Row="1">
+         <Grid.RowDefinitions>
+            <RowDefinition Height="90"/>
+            <RowDefinition Height="*"/>
+         </Grid.RowDefinitions>
 
+         <Grid x:Name="PasswordHeader" Grid.Row="0">
             <Label x:Name="HeaderLabel" Content="Sites" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="36" FontWeight="Bold" Margin="50 10 0 0"/>
 
+            <!-- Possible User Control?? -->
             <Border x:Name="BorderButtonIconView" Height="50" Width="50" Margin="0 20 50 0" VerticalAlignment="Top" HorizontalAlignment="Right" BorderBrush="Gray"
                     BorderThickness="1" CornerRadius="3" Background="#e6e6e6" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" ToolTip="Card View" MouseDown="ResultIconView_MouseDown">
                <Border.Effect>
@@ -170,7 +175,7 @@
                </Border.Effect>
                <fa:ImageAwesome x:Name="IconView" Foreground="Gray" Icon="ThLarge" Height="20" Width="25" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Border>
-
+            <!-- Possible User Control?? -->
             <Border x:Name="BorderButtonGridView" Height="50" Width="50" Margin="0 20 104 0" VerticalAlignment="Top" HorizontalAlignment="Right" BorderBrush="Gray"
                     BorderThickness="1" CornerRadius="3" Background="#e6e6e6" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" ToolTip="List View" MouseDown="ResultGridView_MouseDown">
                <Border.Effect>
@@ -180,31 +185,26 @@
             </Border>
 
             <Label x:Name="LabelSortOptions" Content="Sort By:" FontSize="18" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0 27 425 0" Foreground="Gray"/>
-
+            <!-- Possible User Control?? -->
             <Border x:Name="BorderDropDownSort" Height="50" Width="250" Margin="0 20 170 0" VerticalAlignment="Top" HorizontalAlignment="Right" BorderBrush="Gray"
                     BorderThickness="1" CornerRadius="3" Background="LightGray">
                <Border.Effect>
                   <DropShadowEffect Color="LightGray" />
                </Border.Effect>
                <ComboBox x:Name="ComboBoxSort" BorderThickness="0" FontSize="18" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" SelectionChanged="ComboBoxSort_SelectionChanged" />
-
             </Border>
-
-
-
          </Grid>
-      </ScrollViewer>
 
+         <Grid x:Name="PasswordBody" Grid.Row="1">
+            <ScrollViewer x:Name="BodyScrollViewer" VerticalScrollBarVisibility="Auto">
 
-      <!--BodyGrid-->
+               <Grid x:Name="PasswordList"/>
 
+            </ScrollViewer>
+         </Grid>
 
-
-
-
-
-
-
+      </Grid>
+      <!--Password Grid-->
 
 
    </Grid>
