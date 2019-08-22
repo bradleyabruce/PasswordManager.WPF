@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -124,7 +125,7 @@ namespace PasswordManager.WPF
          set
          {
             _passwordEntries = value;
-            ShowPasswordGrid();
+            ShowPasswordGrids();
          }
       }
 
@@ -144,7 +145,7 @@ namespace PasswordManager.WPF
          MenuCollapsed = true;
          UserSettingsCollapsed = true;
          GridSort = "ASC";
-         ResultsGrid = false;
+         ResultsGrid = true;
       }
 
       private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -161,8 +162,6 @@ namespace PasswordManager.WPF
             //get data
             SetsortOptions(sortOptionsArray);
             getEntriesAsync(userID, "0");
-
-
          }
          catch
          {
@@ -170,15 +169,14 @@ namespace PasswordManager.WPF
          }
       }
 
-      public void ShowPasswordGrid()
+      public void ShowPasswordGrids()
       {
          if (PasswordEntries == null)
          {
             ErrorAndReturnToLogin("Application Error", "Could not retrieve passwords from server", "Error");
          }
          else
-         {
-            
+         {            
             if (PasswordEntries.Count < 1)
             {
                //if there are no passwords for user
@@ -197,52 +195,37 @@ namespace PasswordManager.WPF
                   }
                }
 
-               int height = 30;
+               double totalHeight = 0;
 
+               //create grid
                foreach(string s in categories)
                {
-                  Thickness margin = new Thickness(10, height, 10, 10);
-                  DataGrid grid = new DataGrid();
-                  grid.Margin = margin;
+                  PasswordDataGrid grid = CreateDataGrid(s);
+                  grid.Margin = new Thickness(50, totalHeight, 50, 25);
+                  totalHeight += grid.Height;
                   PasswordList.Children.Add(grid);
-                  height += 50;
+                  totalHeight += 25;
                }
-
-
-               /*
-               //add passwords to categories
-               foreach (string s in categories)
-               {
-                  List<PasswordEntryObject> passwords = new List<PasswordEntryObject>();
-
-                  foreach(PasswordEntryObject password in _passwordEntries)
-                  {
-                     if(password.CategoryID == s)
-                     {
-                        passwords.Add(password);
-                     }
-                  }
-
-                  container.Passwords = passwords;
-                  ContainerList.Add(container);
-               }
-
-               //show categories
-               foreach(PasswordRowContainer container in ContainerList)
-               {
-                  Thickness thickness = new Thickness(0, startingHeight, 0, 50);
-                  container.Margin = thickness;
-                  container.VerticalAlignment = VerticalAlignment.Top;
-                  container.HorizontalAlignment = HorizontalAlignment.Center;
-                  BodyGrid.Children.Add(container);
-               }
-               */
-
-
-
             }
-
          }
+      }
+
+      public PasswordDataGrid CreateDataGrid(string category)
+      {
+         List<PasswordEntryObject> passwords = new List<PasswordEntryObject>();
+
+         //get matching passwords from whole list
+         foreach(PasswordEntryObject password in PasswordEntries)
+         {
+            if (password.CategoryID == category)
+            {
+               passwords.Add(password);
+            }
+         }
+
+         PasswordDataGrid grid = new PasswordDataGrid(category, passwords);
+
+         return grid;
       }
 
 

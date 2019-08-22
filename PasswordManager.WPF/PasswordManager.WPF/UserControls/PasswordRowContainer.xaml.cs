@@ -71,7 +71,7 @@ namespace PasswordManager.WPF.UserControls
       {
          InitializeComponent();
          CategoryName = category;
-            TextBoxCategory.Content = CategoryName;
+         TextBoxCategory.Content = CategoryName;
 
          
       }
