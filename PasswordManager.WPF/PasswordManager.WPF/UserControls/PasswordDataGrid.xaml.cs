@@ -1,4 +1,5 @@
-﻿using PasswordManager.WPF.DataObjects;
+﻿using PasswordManager.WPF.DataAccess;
+using PasswordManager.WPF.DataObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,8 @@ namespace PasswordManager.WPF.UserControls
    public partial class PasswordDataGrid : UserControl
    {
       #region Variables 
+
+      DataGetLogo dgl = new DataGetLogo();
 
       private string _categoryName;
       public string CategoryName
@@ -67,7 +70,7 @@ namespace PasswordManager.WPF.UserControls
 
       #endregion Variables
 
-
+      #region Constructor
 
       public PasswordDataGrid(string category, List<PasswordEntryObject> passwords)
       {
@@ -75,7 +78,12 @@ namespace PasswordManager.WPF.UserControls
          CategoryName = category;
          Passwords = passwords;
          GenerateHeight();
+         GenerateImages();
       }
+
+      #endregion Constructor
+
+      #region Methods
 
       public void GenerateRows()
       {
@@ -86,6 +94,31 @@ namespace PasswordManager.WPF.UserControls
       {
          this.Height = 45 + (Grid.Items.Count * Grid.RowHeight);
       }
+
+      public async void GenerateImages()
+      {/*
+         foreach(PasswordEntryObject password in Passwords)
+         {
+            Task<BitmapImage> asyncImage = dgl.GetImage(password.WebsiteDomain, 50);
+            BitmapImage image = await asyncImage;
+            if (image != null)
+            {
+               ImageWebsiteIcon.Source = image;
+               ImageWebsiteIcon.Visibility = Visibility.Visible;
+               LoadingImage.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+               LoadingImage.Visibility = Visibility.Collapsed;
+               ErrorImage.Visibility = Visibility.Visible;
+            }
+         }
+         */
+      }
+
+      #endregion Methods
+
+      #region Events
 
       private void Grid_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
       {
@@ -126,5 +159,7 @@ namespace PasswordManager.WPF.UserControls
             GridCollapsed = true;
          }
       }
+
+      #endregion Events
    }
 }

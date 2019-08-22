@@ -29,6 +29,7 @@ namespace PasswordManager.WPF
       #region Variables
 
       DataPasswordRetrieval passwordRetrieval = new DataPasswordRetrieval();
+      DataGetLogo dgl = new DataGetLogo();
 
       private bool _menuCollapsed;
       public bool MenuCollapsed
@@ -169,7 +170,7 @@ namespace PasswordManager.WPF
          }
       }
 
-      public void ShowPasswordGrids()
+      public async void ShowPasswordGrids()
       {
          if (PasswordEntries == null)
          {
@@ -183,6 +184,19 @@ namespace PasswordManager.WPF
             }
             else
             {
+               /*
+               //get logos
+               foreach (PasswordEntryObject password in _passwordEntries)
+               {
+                  Task<BitmapImage> asyncImage = dgl.GetImage(password.WebsiteDomain, this.Height);
+                  BitmapImage image = await asyncImage;
+                  if (image != null)
+                  {
+                     password.image = image;
+                  }
+               }
+               */
+
                PasswordList.Children.Clear();
                List<string> categories = new List<string>();
 

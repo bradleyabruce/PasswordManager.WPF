@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 
 namespace PasswordManager.WPF.DataObjects
 {
@@ -15,6 +16,7 @@ namespace PasswordManager.WPF.DataObjects
          WebsiteUsername = null;
          WebsitePassword = null;
          CategoryID = null;
+         image = null;
       }
 
       #region Properties
@@ -24,6 +26,7 @@ namespace PasswordManager.WPF.DataObjects
       public string WebsiteUsername { get; set; }
       public string WebsitePassword { get; set; }
       public string CategoryID { get; set; }
+      public BitmapImage image { get; set; }
 
       #endregion Properties
 
