@@ -40,7 +40,7 @@ namespace PasswordManager.WPF.DataAccess
          }
       }
 
-      BitmapImage BitmapToImageSource(Bitmap bitmap)
+      public static BitmapImage BitmapToImageSource(Bitmap bitmap)
       {
          using (MemoryStream memory = new MemoryStream())
          {
@@ -59,14 +59,36 @@ namespace PasswordManager.WPF.DataAccess
 
       public BitmapImage getResponse(HttpWebRequest request)
       {
-         HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-         Stream stream = response.GetResponseStream();
+         try
+         {
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            Stream stream = response.GetResponseStream();
 
-         Bitmap bmp = new Bitmap(stream);
+            //get image from stream 
+            //because bitmaps do not take into consideration transparency, we need to modify it a bit
+            Bitmap bmp = new Bitmap(stream);
+            Bitmap transparent = DataGetLogo.ModifyTransparency(bmp);
 
-         BitmapImage image = BitmapToImageSource(bmp);
+            BitmapImage image = BitmapToImageSource(transparent);
 
-         return image;
+            return image;
+         }
+         catch
+         {
+            return null;
+         }
       }
+
+      public static Bitmap ModifyTransparency(Bitmap image)
+      {
+         var b = new Bitmap(image.Width, image.Height);
+         b.SetResolution(image.HorizontalResolution, image.VerticalResolution);
+         var g = Graphics.FromImage(b);
+         g.Clear(System.Drawing.Color.White);
+         g.DrawImageUnscaled(image, 0, 0);
+
+         return b;
+      }
+
    }
 }

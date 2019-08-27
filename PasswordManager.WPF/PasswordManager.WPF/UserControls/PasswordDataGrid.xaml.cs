@@ -2,18 +2,17 @@
 using PasswordManager.WPF.DataObjects;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Data;
+using System.Drawing;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace PasswordManager.WPF.UserControls
 {
@@ -37,14 +36,41 @@ namespace PasswordManager.WPF.UserControls
          }
       }
 
-      private List<PasswordEntryObject> _passwords;
-      public List<PasswordEntryObject> Passwords
+      private PasswordEntryObject _selectedPassword;
+      public PasswordEntryObject SelectedPassword
       {
-         get { return _passwords; }
+         get { return _selectedPassword; }
          set
          {
-            _passwords = value;
-            GenerateRows();
+            _selectedPassword = value;
+            Popup pop = new Popup();
+         }
+      }
+
+
+      private List<PasswordEntryObject> _passwordsWithoutImages;
+      public List<PasswordEntryObject> PasswordsWithoutImages
+      {
+         get { return _passwordsWithoutImages; }
+         set
+         {
+            _passwordsWithoutImages = value;
+            GenerateImages();
+         }
+      }
+
+      private List<PasswordEntryObject> _passwordsWithImages;
+      public List<PasswordEntryObject> PasswordsWithImages
+      {
+         get { return _passwordsWithImages; }
+         set
+         {
+            _passwordsWithImages = value;
+
+            //bind to datagrid
+            CollectionViewSource itemCollectionViewSource;
+            itemCollectionViewSource = (CollectionViewSource)(FindResource("ItemCollectionViewSource"));
+            itemCollectionViewSource.Source = _passwordsWithoutImages;
          }
       }
 
@@ -57,12 +83,12 @@ namespace PasswordManager.WPF.UserControls
             _gridCollapsed = value;
             if (_gridCollapsed)
             {
-               Grid.Visibility = Visibility.Collapsed;
+               //Grid.Visibility = Visibility.Collapsed;
                dropdownImage.Icon = FontAwesome.WPF.FontAwesomeIcon.SortAsc;
             }
             else
             {
-               Grid.Visibility = Visibility.Visible;
+               //Grid.Visibility = Visibility.Visible;
                dropdownImage.Icon = FontAwesome.WPF.FontAwesomeIcon.SortDesc;
             }
          }
@@ -76,8 +102,8 @@ namespace PasswordManager.WPF.UserControls
       {
          InitializeComponent();
          CategoryName = category;
-         Passwords = passwords;
-         GenerateHeight();
+         PasswordsWithoutImages = passwords;
+         this.Height = 45 + (PasswordsWithoutImages.Count * 52);
          GenerateImages();
       }
 
@@ -85,35 +111,41 @@ namespace PasswordManager.WPF.UserControls
 
       #region Methods
 
-      public void GenerateRows()
-      {
-         Grid.ItemsSource = Passwords;
-      }
-
-      public void GenerateHeight()
-      {
-         this.Height = 45 + (Grid.Items.Count * Grid.RowHeight);
-      }
 
       public async void GenerateImages()
-      {/*
-         foreach(PasswordEntryObject password in Passwords)
+      {
+         List<PasswordEntryObject> newPasswords = new List<PasswordEntryObject>();
+
+         foreach(PasswordEntryObject password in PasswordsWithoutImages)
          {
             Task<BitmapImage> asyncImage = dgl.GetImage(password.WebsiteDomain, 50);
             BitmapImage image = await asyncImage;
             if (image != null)
             {
-               ImageWebsiteIcon.Source = image;
-               ImageWebsiteIcon.Visibility = Visibility.Visible;
-               LoadingImage.Visibility = Visibility.Collapsed;
+               password.Image = image;
+               newPasswords.Add(password);
+               /*
+               string path = "..\\..\\Images\\unlock.png";
+               Bitmap bitmap = new Bitmap(path);
+               Bitmap transparent = DataGetLogo.ModifyTransparency(bitmap);
+               BitmapImage bitmapImage = DataGetLogo.BitmapToImageSource(transparent);
+               password.Image = bitmapImage;
+               newPasswords.Add(password);
+               */
             }
             else
             {
-               LoadingImage.Visibility = Visibility.Collapsed;
-               ErrorImage.Visibility = Visibility.Visible;
+               string path = "..\\..\\Images\\unlock.png";
+               Bitmap bitmap = new Bitmap(path);
+               Bitmap transparent = DataGetLogo.ModifyTransparency(bitmap);
+               BitmapImage bitmapImage = DataGetLogo.BitmapToImageSource(transparent);
+               password.Image = bitmapImage;
+               newPasswords.Add(password);
             }
          }
-         */
+
+         PasswordsWithImages = newPasswords;
+         
       }
 
       #endregion Methods
@@ -161,5 +193,13 @@ namespace PasswordManager.WPF.UserControls
       }
 
       #endregion Events
+
+      private void PasswordGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+      {
+         DataGrid dg = sender as DataGrid;
+         PasswordEntryObject password = dg.SelectedValue as PasswordEntryObject;
+
+         //create viewer from password
+      }
    }
 }

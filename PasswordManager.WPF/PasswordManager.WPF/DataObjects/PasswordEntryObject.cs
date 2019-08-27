@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace PasswordManager.WPF.DataObjects
          WebsiteUsername = null;
          WebsitePassword = null;
          CategoryID = null;
-         image = null;
+         Image = null;
       }
 
       #region Properties
@@ -26,7 +27,7 @@ namespace PasswordManager.WPF.DataObjects
       public string WebsiteUsername { get; set; }
       public string WebsitePassword { get; set; }
       public string CategoryID { get; set; }
-      public BitmapImage image { get; set; }
+      public BitmapImage Image { get; set; }
 
       #endregion Properties
 
