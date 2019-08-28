@@ -16,9 +16,6 @@ namespace PasswordManager.WPF.DataAccess
    {
       DataUtility du = new DataUtility();
 
-
-
-
       public async Task<BitmapImage> GetImage(string domain, double size)
       {
          try
@@ -70,7 +67,6 @@ namespace PasswordManager.WPF.DataAccess
             Bitmap transparent = DataGetLogo.ModifyTransparency(bmp);
 
             BitmapImage image = BitmapToImageSource(transparent);
-
             return image;
          }
          catch

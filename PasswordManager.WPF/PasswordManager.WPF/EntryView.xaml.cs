@@ -88,15 +88,15 @@ namespace PasswordManager.WPF
          }
       }
 
-      private bool _resultsGrid;
-      public bool ResultsGrid
+      private string _gridOrCardView;
+      public string GridOrCardView
       {
-         get { return _resultsGrid; }
+         get { return _gridOrCardView; }
          set
          {
-            _resultsGrid = value;
+            _gridOrCardView = value;
             var converter = new BrushConverter();
-            if (_resultsGrid)
+            if (_gridOrCardView == "Grid")
             {
                GridView.Foreground = Brushes.White;
                BorderButtonGridView.Background = (Brush)converter.ConvertFrom("#0066ff");
@@ -106,7 +106,7 @@ namespace PasswordManager.WPF
 
                //TODO add grid change
             }
-            else
+            else if(_gridOrCardView == "Card")
             {
                IconView.Foreground = Brushes.White;
                BorderButtonIconView.Background = (Brush)converter.ConvertFrom("#0066ff");
@@ -130,13 +130,9 @@ namespace PasswordManager.WPF
          }
       }
 
-
-      public string[] sortOptionsArray = { "Category A-Z", "Category Z-A", "Website A-Z", "Website Z-A", "Newest to Oldest", "Oldest to Neweset" };
-
-      public bool UserChanged = true;
+      public string[] sortOptionsArray = { "Website A-Z", "Website Z-A", "Newest to Oldest", "Oldest to Neweset" };
 
       #endregion Variables
-
 
       #region Constructors
 
@@ -145,8 +141,7 @@ namespace PasswordManager.WPF
          InitializeComponent();
          MenuCollapsed = true;
          UserSettingsCollapsed = true;
-         GridSort = "ASC";
-         ResultsGrid = true;
+         GridOrCardView = "Grid";
       }
 
       private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -162,6 +157,7 @@ namespace PasswordManager.WPF
 
             //get data
             SetsortOptions(sortOptionsArray);
+            GridSort = ComboBoxSort.SelectedValue.ToString();
             getEntriesAsync(userID, "0");
          }
          catch
@@ -170,82 +166,9 @@ namespace PasswordManager.WPF
          }
       }
 
-      public async void ShowPasswordGrids()
-      {
-         if (PasswordEntries == null)
-         {
-            ErrorAndReturnToLogin("Application Error", "Could not retrieve passwords from server", "Error");
-         }
-         else
-         {            
-            if (PasswordEntries.Count < 1)
-            {
-               //if there are no passwords for user
-            }
-            else
-            {
-               /*
-               //get logos
-               foreach (PasswordEntryObject password in _passwordEntries)
-               {
-                  Task<BitmapImage> asyncImage = dgl.GetImage(password.WebsiteDomain, this.Height);
-                  BitmapImage image = await asyncImage;
-                  if (image != null)
-                  {
-                     password.image = image;
-                  }
-               }
-               */
+      #endregion Constructors
 
-               PasswordList.Children.Clear();
-               List<string> categories = new List<string>();
-
-               //get categories
-               foreach (PasswordEntryObject password in _passwordEntries)
-               {
-                  if (!categories.Contains(password.CategoryID))
-                  {
-                     categories.Add(password.CategoryID);
-                  }
-               }
-
-               double totalHeight = 0;
-
-               //create grid
-               foreach(string s in categories)
-               {
-                  PasswordDataGrid grid = CreateDataGrid(s);
-                  grid.Margin = new Thickness(50, totalHeight, 50, 25);
-                  totalHeight += grid.Height;
-                  PasswordList.Children.Add(grid);
-                  totalHeight += 25;
-               }
-            }
-         }
-      }
-
-      public PasswordDataGrid CreateDataGrid(string category)
-      {
-         List<PasswordEntryObject> passwords = new List<PasswordEntryObject>();
-
-         //get matching passwords from whole list
-         foreach(PasswordEntryObject password in PasswordEntries)
-         {
-            if (password.CategoryID == category)
-            {
-               passwords.Add(password);
-            }
-         }
-
-         PasswordDataGrid grid = new PasswordDataGrid(category, passwords);
-
-         return grid;
-      }
-
-
-      #endregion
-
-      #region Nav Events
+      #region Top Nav Events
 
       private void ButtonUserMenu_MouseEnter(object sender, MouseEventArgs e)
       {
@@ -259,8 +182,6 @@ namespace PasswordManager.WPF
          //textboxUserName.Background = Brushes.LightBlue;
       }
 
-      #endregion
-
       private void ButtonUser_Click(object sender, RoutedEventArgs e)
       {
          if (UserSettingsCollapsed)
@@ -273,9 +194,21 @@ namespace PasswordManager.WPF
          }
       }
 
-      #region Menu Events
+      private void UserSettingsSignOut_MouseDown(object sender, MouseButtonEventArgs e)
+      {
+         App.Current.Properties["UserID"] = null;
+         App.Current.Properties["UserEmail"] = null;
 
-      #endregion
+         LoginWindow login = new LoginWindow();
+         this.Close();
+         login.ShowDialog();
+         login.HorizontalAlignment = HorizontalAlignment.Center;
+         login.VerticalAlignment = VerticalAlignment.Center;
+      }
+
+      #endregion End Top Nav Events
+
+      #region Side Menu Events
 
       private void Menu_MouseEnter(object sender, MouseEventArgs e)
       {
@@ -321,6 +254,10 @@ namespace PasswordManager.WPF
          }
       }
 
+      #endregion Side Menu Events
+
+      #region General Events
+
       private void TextButton_MouseEnter(object sender, MouseEventArgs e)
       {
          TextBlock textBlock = sender as TextBlock;
@@ -341,18 +278,6 @@ namespace PasswordManager.WPF
          }
       }
 
-      private void UserSettingsSignOut_MouseDown(object sender, MouseButtonEventArgs e)
-      {
-         App.Current.Properties["UserID"] = null;
-         App.Current.Properties["UserEmail"] = null;
-
-         LoginWindow login = new LoginWindow();
-         this.Close();
-         login.ShowDialog();
-         login.HorizontalAlignment = HorizontalAlignment.Center;
-         login.VerticalAlignment = VerticalAlignment.Center;
-      }
-
       private void Button_MouseEnter(object sender, MouseEventArgs e)
       {
          this.Cursor = Cursors.Hand;
@@ -363,46 +288,28 @@ namespace PasswordManager.WPF
          this.Cursor = Cursors.Arrow;
       }
 
-      private void ButtonSort_MouseDown(object sender, MouseButtonEventArgs e)
-      {
-         if (GridSort == "ASC")
-         {
-            GridSort = "DESC";
-         }
-         else if (GridSort == "DESC")
-         {
-            GridSort = "ASC";
-         }
-      }
+      #endregion General Events
+
+      #region Password Pane Events 
 
       private void ResultIconView_MouseDown(object sender, MouseButtonEventArgs e)
       {
-         ResultsGrid = false;
+         GridOrCardView = "Card";
       }
 
       private void ResultGridView_MouseDown(object sender, MouseButtonEventArgs e)
       {
-         ResultsGrid = true;
+         GridOrCardView = "Grid";
       }
-
-
-      #region Methods
-
-      public void SetsortOptions(string[] array)
-      {
-         ComboBoxSort.ItemsSource = array;
-
-         ComboBoxSort.SelectedIndex = 0;
-      }
-
-
-      #endregion Methods
 
       private void ComboBoxSort_SelectionChanged(object sender, SelectionChangedEventArgs e)
       {
          GridSort = ComboBoxSort.SelectedItem.ToString();
       }
 
+      #endregion Password Pane Events
+
+      #region Methods
       public async void getEntriesAsync(string UserID, string CategoryID)
       {
          Task<List<PasswordEntryObject>> passwordRetreivalAsync = passwordRetrieval.RetreivePasswords(UserID, CategoryID);
@@ -412,6 +319,13 @@ namespace PasswordManager.WPF
          PasswordEntries = await passwordRetreivalAsync;
 
          //LoginLoading.Visibility = Visibility.Collapsed;
+      }
+
+      public void SetsortOptions(string[] array)
+      {
+         ComboBoxSort.ItemsSource = array;
+
+         ComboBoxSort.SelectedIndex = 0;
       }
 
       public void ErrorAndReturnToLogin(string errorTitle, string errorMessage, string errorIcon)
@@ -427,5 +341,28 @@ namespace PasswordManager.WPF
          loginWindow.ShowDialog();
       }
 
+      public void ShowPasswordGrids()
+      {
+         if (PasswordEntries == null)
+         {
+            ErrorAndReturnToLogin("Application Error", "Could not retrieve passwords from server", "Error");
+         }
+         else
+         {
+            if (PasswordEntries.Count < 1)
+            {
+               //if there are no passwords for user
+            }
+            else
+            {
+               PasswordList.Children.Clear();
+               PasswordDataGrid grid = new PasswordDataGrid("Passwords", PasswordEntries);
+               grid.Margin = new Thickness(50, 0, 50, 50);
+               PasswordList.Children.Add(grid);
+            }
+         }
+      }
+
+      #endregion Methods
    }
 }

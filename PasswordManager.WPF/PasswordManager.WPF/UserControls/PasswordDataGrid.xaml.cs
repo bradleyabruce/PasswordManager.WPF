@@ -1,14 +1,10 @@
 ﻿using PasswordManager.WPF.DataAccess;
 using PasswordManager.WPF.DataObjects;
-using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Drawing;
-using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -25,6 +21,17 @@ namespace PasswordManager.WPF.UserControls
 
       DataGetLogo dgl = new DataGetLogo();
 
+      private string _sortFilter;
+      public string SortFilter
+      {
+         get { return _sortFilter; }
+         set
+         {
+            _sortFilter = value;
+            ApplySort(_sortFilter);           
+         }
+      }      
+
       private string _categoryName;
       public string CategoryName
       {
@@ -36,18 +43,6 @@ namespace PasswordManager.WPF.UserControls
          }
       }
 
-      private PasswordEntryObject _selectedPassword;
-      public PasswordEntryObject SelectedPassword
-      {
-         get { return _selectedPassword; }
-         set
-         {
-            _selectedPassword = value;
-            Popup pop = new Popup();
-         }
-      }
-
-
       private List<PasswordEntryObject> _passwordsWithoutImages;
       public List<PasswordEntryObject> PasswordsWithoutImages
       {
@@ -55,6 +50,7 @@ namespace PasswordManager.WPF.UserControls
          set
          {
             _passwordsWithoutImages = value;
+            //when passwords are set, retrieve the images for the passwords
             GenerateImages();
          }
       }
@@ -67,7 +63,7 @@ namespace PasswordManager.WPF.UserControls
          {
             _passwordsWithImages = value;
 
-            //bind to datagrid
+            //when the passwords with images are set, bind those to the grid for the user to see
             CollectionViewSource itemCollectionViewSource;
             itemCollectionViewSource = (CollectionViewSource)(FindResource("ItemCollectionViewSource"));
             itemCollectionViewSource.Source = _passwordsWithoutImages;
@@ -105,12 +101,13 @@ namespace PasswordManager.WPF.UserControls
          PasswordsWithoutImages = passwords;
          this.Height = 45 + (PasswordsWithoutImages.Count * 52);
          GenerateImages();
+
+         SortFilter = "Website A-Z";
       }
 
       #endregion Constructor
 
       #region Methods
-
 
       public async void GenerateImages()
       {
@@ -144,7 +141,41 @@ namespace PasswordManager.WPF.UserControls
             }
          }
 
-         PasswordsWithImages = newPasswords;
+         PasswordsWithImages = newPasswords;         
+      }
+
+      public void ApplySort(string sort)
+      {
+         var domainColumn = PasswordGrid.Columns[1];
+
+         switch (sort)
+         {
+            case "Website A-Z":
+               PasswordGrid.Items.SortDescriptions.Clear();
+               PasswordGrid.Items.SortDescriptions.Add(new System.ComponentModel.SortDescription(domainColumn.SortMemberPath, System.ComponentModel.ListSortDirection.Ascending));
+
+               foreach (var col in PasswordGrid.Columns)
+               {
+                  col.SortDirection = null;
+               }
+               domainColumn.SortDirection = System.ComponentModel.ListSortDirection.Ascending;
+
+               PasswordGrid.Items.Refresh();
+               break;
+
+            case "Website Z-A":
+               PasswordGrid.Items.SortDescriptions.Clear();
+               PasswordGrid.Items.SortDescriptions.Add(new System.ComponentModel.SortDescription(domainColumn.SortMemberPath, System.ComponentModel.ListSortDirection.Ascending));
+
+               foreach (var col in PasswordGrid.Columns)
+               {
+                  col.SortDirection = null;
+               }
+               domainColumn.SortDirection = System.ComponentModel.ListSortDirection.Ascending;
+
+               PasswordGrid.Items.Refresh();
+               break;
+         }
          
       }
 
@@ -163,7 +194,6 @@ namespace PasswordManager.WPF.UserControls
          DependencyObject parentScrollContentPresenter = VisualTreeHelper.GetParent(parentInnerGrid);
          DependencyObject parentOuterGrid = VisualTreeHelper.GetParent(parentScrollContentPresenter);
          DependencyObject parentScrollView = VisualTreeHelper.GetParent(parentOuterGrid);
-
 
          ScrollViewer scrollView = parentScrollView as ScrollViewer;
          scrollView.ScrollToVerticalOffset(scrollView.VerticalOffset - e.Delta);
@@ -191,9 +221,6 @@ namespace PasswordManager.WPF.UserControls
             GridCollapsed = true;
          }
       }
-
-      #endregion Events
-
       private void PasswordGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
       {
          DataGrid dg = sender as DataGrid;
@@ -201,5 +228,7 @@ namespace PasswordManager.WPF.UserControls
 
          //create viewer from password
       }
+
+      #endregion Events
    }
 }
