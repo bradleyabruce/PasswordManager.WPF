@@ -5,3 +5,5 @@ bin/
 PasswordManager.WPF/.vs/PasswordManager.WPF/v16/
 
 PasswordManager.WPF/.vs/
+
+PasswordManager.WPF/PasswordManager.WPF/obj/Debug/
