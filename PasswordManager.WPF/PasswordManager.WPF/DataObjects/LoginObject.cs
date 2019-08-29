@@ -1,5 +1,4 @@
-﻿
-namespace PasswordManager.WPF.DataAccessObject
+﻿namespace PasswordManager.WPF.DataAccessObject
 {
     public class LoginObject
     {

@@ -1,11 +1,8 @@
 ﻿using PasswordManager.WPF.DataObjects;
-using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 
@@ -19,6 +16,7 @@ namespace PasswordManager.WPF.DataAccess
 
       #endregion
 
+      #region Methods
 
       public async Task<List<PasswordEntryObject>> RetreivePasswords(string userID, string categoryID)
       {
@@ -34,7 +32,6 @@ namespace PasswordManager.WPF.DataAccess
          {
             return null;
          }
-
          List<PasswordEntryObject> passwords = await Task.Run(() => ReceiveRetreivalHttp(request));
 
          return passwords;
@@ -61,7 +58,6 @@ namespace PasswordManager.WPF.DataAccess
             {
                passwords.Add(password);
             }
-
          }
          catch
          {
@@ -70,5 +66,7 @@ namespace PasswordManager.WPF.DataAccess
 
          return passwords;
       }
+
+      #endregion Mathods
    }
 }

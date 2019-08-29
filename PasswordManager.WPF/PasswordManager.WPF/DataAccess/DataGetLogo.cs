@@ -14,7 +14,13 @@ namespace PasswordManager.WPF.DataAccess
 {
    class DataGetLogo
    {
+      #region Variables
+
       DataUtility du = new DataUtility();
+
+      #endregion Variables
+
+      #region Methods
 
       public async Task<BitmapImage> GetImage(string domain, double size)
       {
@@ -86,5 +92,6 @@ namespace PasswordManager.WPF.DataAccess
          return b;
       }
 
+      #endregion Methods
    }
 }

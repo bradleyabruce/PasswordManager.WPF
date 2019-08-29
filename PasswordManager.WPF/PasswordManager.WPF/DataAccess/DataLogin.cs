@@ -1,15 +1,14 @@
-﻿using System;
+﻿using PasswordManager.WPF.DataAccessObject;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Configuration;
-using System.Net;
-using PasswordManager.WPF.DataAccessObject;
 using System.IO;
+using System.Net;
+using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 
 namespace PasswordManager.WPF.DataAccess
 {
-    class DataLogin
+   class DataLogin
     {
         #region Variables
 
