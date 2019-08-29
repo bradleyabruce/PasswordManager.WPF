@@ -121,14 +121,6 @@ namespace PasswordManager.WPF.UserControls
             {
                password.Image = image;
                newPasswords.Add(password);
-               /*
-               string path = "..\\..\\Images\\unlock.png";
-               Bitmap bitmap = new Bitmap(path);
-               Bitmap transparent = DataGetLogo.ModifyTransparency(bitmap);
-               BitmapImage bitmapImage = DataGetLogo.BitmapToImageSource(transparent);
-               password.Image = bitmapImage;
-               newPasswords.Add(password);
-               */
             }
             else
             {
